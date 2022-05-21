@@ -10,6 +10,7 @@ export default function UploadImages({
 }) {
   const onChange = (imageList: ImageListType) => {
     setImages(imageList)
+    console.log(imageList)
   }
 
   return (
@@ -26,31 +27,25 @@ export default function UploadImages({
           imageList,
           onImageUpload,
           onImageRemoveAll,
-          onImageUpdate,
-          onImageRemove,
           isDragging,
           dragProps,
         }) => (
           // write your building UI
           <div className="upload__image-wrapper">
             <button
-              style={isDragging ? { color: 'red' } : undefined}
+              className={'btn-primary' + (isDragging ? ' bg-green-500' : '')}
               onClick={onImageUpload}
               {...dragProps}
             >
-              Click or Drop here
+              {isDragging ? 'Drop Images' : 'Upload or Drop Image(s)'}
             </button>
             &nbsp;
-            <button onClick={onImageRemoveAll}>Remove all images</button>
-            {imageList.map((image, index) => (
-              <div key={index} className="image-item">
-                <img src={image['data_url']} alt="" width="100" />
-                <div className="image-item__btn-wrapper">
-                  <button onClick={() => onImageUpdate(index)}>Update</button>
-                  <button onClick={() => onImageRemove(index)}>Remove</button>
-                </div>
-              </div>
-            ))}
+            <button
+              onClick={onImageRemoveAll}
+              className="btn-primary bg-red-500 hover:bg-red-700"
+            >
+              Remove all images
+            </button>
           </div>
         )}
       </ImageUploading>

@@ -5,7 +5,7 @@ import ProgressBar from './ProgressBar'
 
 export default function SubmitNFTForm() {
   const [state, setState] = useState<'connect' | 'configure' | 'confirm'>(
-    'connect'
+    'configure'
   )
   const renderForm = () => {
     switch (state) {
@@ -17,9 +17,19 @@ export default function SubmitNFTForm() {
         return <ConfigureDeployment />
     }
   }
+  const stateToProgress = (): number => {
+    switch (state) {
+      case 'connect':
+        return 33
+      case 'configure':
+        return 66
+      case 'confirm':
+        return 100
+    }
+  }
   return (
     <div>
-      <ProgressBar progress={20} />
+      <ProgressBar progress={stateToProgress()} />
       {renderForm()}
     </div>
   )
