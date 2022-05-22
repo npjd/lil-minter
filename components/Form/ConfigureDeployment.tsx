@@ -11,7 +11,7 @@ export default function ConfigureDeployment() {
     <div>
       <UploadImages setImages={setImages} images={images} />
       {images.length >= 1 && (
-        <div className='flex flex-row w-full'>
+        <div className='flex flex-row w-full justify-evenly'>
           <EditMetadata />
           <ViewImages images={images} />
         </div>
