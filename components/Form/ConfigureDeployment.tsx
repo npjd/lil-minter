@@ -10,8 +10,8 @@ export default function ConfigureDeployment({
   images,
   setImages,
 }: {
-  metadata: { name: string; description: string }
-  setMetadata: (metadata: { name: string; description: string }) => void
+  metadata: { name: string; description: string; count: number }
+  setMetadata: (metadata: { name: string; description: string; count:number}) => void
   images: ImageListType
   setImages: (images: ImageListType) => void
 }) {

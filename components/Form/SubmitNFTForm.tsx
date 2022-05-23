@@ -12,7 +12,8 @@ export default function SubmitNFTForm() {
   const [metadata, setMetadata] = useState<{
     name: string
     description: string
-  }>({ name: '', description: '' })
+    count: number
+  }>({ name: '', description: '', count: 0 })
   const [images, setImages] = useState<ImageListType>([])
   const renderForm = () => {
     switch (state) {

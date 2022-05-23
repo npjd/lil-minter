@@ -7,15 +7,18 @@ export default function EditMetadata({
   setMetadata,
 }: {
   images: ImageListType
-  metadata: { name: string; description: string }
-  setMetadata: (metadata: { name: string; description: string }) => void
+  metadata: { name: string; description: string; count: number }
+  setMetadata: (metadata: {
+    name: string
+    description: string
+    count: number
+  }) => void
 }) {
   const [name, setName] = useState(metadata.name)
   const [description, setDescription] = useState(metadata.description)
   const [count, setCount] = useState(images.length)
   const updateMetadata = () => {
-    setMetadata({ name, description })
-    
+    setMetadata({ name, description, count })
   }
   return (
     <div className="flex flex-col">
