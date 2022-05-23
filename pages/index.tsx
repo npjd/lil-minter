@@ -7,7 +7,7 @@ import Hero from '../components/Hero'
 
 const Home: NextPage = () => {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
+    <div className="flex flex-col py-2 h-screen">
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
@@ -19,6 +19,7 @@ const Home: NextPage = () => {
         <div className="mt-6 w-5/6 ">
           <SubmitNFTForm/>
         </div>
+
       </main>
 
       <Footer />

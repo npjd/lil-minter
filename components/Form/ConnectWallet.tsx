@@ -9,7 +9,7 @@ import {
 export default function ConnectWallet({
   setState,
 }: {
-  setState: (state: 'connect' | 'configure' | 'confirm') => void
+  setState: (state: 'connect' | 'configure' | 'confirm' |'deploy') => void
 }) {
   const status = useStatus()
   const chainId = useChainId()
@@ -19,7 +19,7 @@ export default function ConnectWallet({
       .then(() => {
         console.log('connected')
         if (chainId !== undefined && chainId == '1030') {
-          setState("configure")
+          setState("deploy")
         }
       })
       .catch((error) => {
@@ -30,7 +30,7 @@ export default function ConnectWallet({
   const swicthToeSpace = () => {
     switchChain('0x406')
       .then(() => {
-        setState("configure")
+        setState("deploy")
       })
       .catch((error) => {
         console.log('switch failed')
