@@ -7,8 +7,9 @@ import ProgressBar from './ProgressBar'
 
 export default function SubmitNFTForm() {
   const [state, setState] = useState<
-    'connect' | 'deploy' | 'configure' | 'confirm'
-  >('connect')
+   'deploy' | 'configure' | 'confirm'
+  >('deploy')
+  const [contractAddress, setContractAddress] = useState<string | null>(null)
   const [metadata, setMetadata] = useState<{
     name: string
     description: string
@@ -17,10 +18,8 @@ export default function SubmitNFTForm() {
   const [images, setImages] = useState<ImageListType>([])
   const renderForm = () => {
     switch (state) {
-      case 'connect':
-        return <ConnectWallet setState={setState} />
       case 'deploy':
-        return <DeployContract />
+        return <DeployContract setContractAddress={setContractAddress} />
       case 'configure':
         return (
           <ConfigureDeployment metadata={metadata} setMetadata={setMetadata} images={images} setImages={setImages} />
@@ -34,21 +33,21 @@ export default function SubmitNFTForm() {
         )
     }
   }
-  const stateToProgress = (): number => {
-    switch (state) {
-      case 'connect':
-        return 25
-      case 'deploy':
-        return 50
-      case 'configure':
-        return 75
-      case 'confirm':
-        return 100
-    }
-  }
+  // const stateToProgress = (): number => {
+  //   switch (state) {
+  //     case 'connect':
+  //       return 25
+  //     case 'deploy':
+  //       return 50
+  //     case 'configure':
+  //       return 75
+  //     case 'confirm':
+  //       return 100
+  //   }
+  // }
   return (
     <div>
-      <ProgressBar progress={stateToProgress()} />
+      {/* <ProgressBar progress={stateToProgress()} /> */}
       {renderForm()}
     </div>
   )

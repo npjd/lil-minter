@@ -6,45 +6,17 @@ import {
   switchChain,
 } from '@cfxjs/use-wallet/dist/ethereum'
 
-export default function ConnectWallet({
-  setState,
-}: {
-  setState: (state: 'connect' | 'configure' | 'confirm' |'deploy') => void
-}) {
+export default function ConnectWallet() {
   const status = useStatus()
-  const chainId = useChainId()
-
-  const connectWallet = () => {
-    connect()
-      .then(() => {
-        console.log('connected')
-        if (chainId !== undefined && chainId == '1030') {
-          setState("deploy")
-        }
-      })
-      .catch((error) => {
-        console.log('connection failed')
-      })
-  }
-
-  const swicthToeSpace = () => {
-    switchChain('0x406')
-      .then(() => {
-        setState("deploy")
-      })
-      .catch((error) => {
-        console.log('switch failed')
-      })
-  }
 
   return (
     <div>
       {status !== 'active' ? (
-        <button className="btn-primary" onClick={() => connectWallet()}>
+        <button className="btn-primary" onClick={connect}>
           Connect Wallet
         </button>
       ) : (
-        <button className="btn-primary" onClick={() => swicthToeSpace()}>
+        <button className="btn-primary" onClick={() => switchChain('0x406')}>
           Switch Chain to eSpace
         </button>
       )}

@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import Footer from '../components/Footer'
+import ConnectWallet from '../components/Form/ConnectWallet'
 import SubmitNFTForm from '../components/Form/SubmitNFTForm'
 import Hero from '../components/Hero'
 
@@ -15,6 +16,7 @@ const Home: NextPage = () => {
 
       <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
         <Hero />
+        <ConnectWallet/>
 
         <div className="mt-6 w-5/6 ">
           <SubmitNFTForm/>
