@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { ImageListType } from 'react-images-uploading'
+import Pinging from '../Pinging/Pinging'
 import ConfigureDeployment from './ConfigureDeployment'
 
 import DeployContract from './DeployContract'
@@ -7,7 +8,7 @@ import ProgressBar from './ProgressBar'
 
 export default function SubmitNFTForm() {
   const [state, setState] = useState<
-   'deploy' | 'configure' | 'ping'| 'assign'|'confirm'
+    'deploy' | 'configure' | 'ping' | 'assign' | 'confirm'
   >('configure')
   const [contractAddress, setContractAddress] = useState<string | null>(null)
   const [metadata, setMetadata] = useState<{
@@ -19,17 +20,28 @@ export default function SubmitNFTForm() {
   const renderForm = () => {
     switch (state) {
       case 'deploy':
-        return <DeployContract setContractAddress={setContractAddress} setState={setState} />
+        return (
+          <DeployContract
+            setContractAddress={setContractAddress}
+            setState={setState}
+          />
+        )
       case 'configure':
         return (
-          <ConfigureDeployment metadata={metadata} setMetadata={setMetadata} images={images} setImages={setImages} setState={setState} />
+          <ConfigureDeployment
+            metadata={metadata}
+            setMetadata={setMetadata}
+            images={images}
+            setImages={setImages}
+            setState={setState}
+          />
         )
+      case 'ping':
+        return <Pinging images={images} metadata={metadata} />
       case 'confirm':
         return (
           // <ConfigureDeployment metadata={metadata} setMetadata={setMetadata} />
-          <div>
-            lol
-          </div>
+          <div>lol</div>
         )
     }
   }

@@ -21,10 +21,9 @@ export default function UploadImages({
         onChange={onChange}
         maxNumber={50}
         dataURLKey="data_url"
-        acceptType={['jpg', 'gif', 'png']}
+        acceptType={[ 'png']}
       >
         {({
-          imageList,
           onImageUpload,
           onImageRemoveAll,
           isDragging,
