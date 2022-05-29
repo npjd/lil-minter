@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { ImageListType } from 'react-images-uploading'
 import ConfigureDeployment from './ConfigureDeployment'
-import ConnectWallet from './ConnectWallet'
+
 import DeployContract from './DeployContract'
 import ProgressBar from './ProgressBar'
 
 export default function SubmitNFTForm() {
   const [state, setState] = useState<
-   'deploy' | 'configure' | 'confirm'
-  >('deploy')
+   'deploy' | 'configure' | 'ping'| 'assign'|'confirm'
+  >('configure')
   const [contractAddress, setContractAddress] = useState<string | null>(null)
   const [metadata, setMetadata] = useState<{
     name: string
@@ -19,10 +19,10 @@ export default function SubmitNFTForm() {
   const renderForm = () => {
     switch (state) {
       case 'deploy':
-        return <DeployContract setContractAddress={setContractAddress} />
+        return <DeployContract setContractAddress={setContractAddress} setState={setState} />
       case 'configure':
         return (
-          <ConfigureDeployment metadata={metadata} setMetadata={setMetadata} images={images} setImages={setImages} />
+          <ConfigureDeployment metadata={metadata} setMetadata={setMetadata} images={images} setImages={setImages} setState={setState} />
         )
       case 'confirm':
         return (

@@ -17,42 +17,42 @@ export default function EditMetadata({
   const [name, setName] = useState(metadata.name)
   const [description, setDescription] = useState(metadata.description)
   const [count, setCount] = useState(images.length)
-  const updateMetadata = () => {
-    setMetadata({ name, description, count })
-  }
+
   return (
     <div className="flex flex-col">
+      <p> Use `count` and `index` </p>
       <label className="text-sm">Name</label>
       <input
-        className="w-full"
+        className="w-full text-input"
         type="text"
         value={name}
         onChange={(e) => {
+          setMetadata({ name:e.target.value, description, count })
           setName(e.target.value)
-          updateMetadata()
         }}
         placeholder="Name"
       />
       <label className="text-sm">Description</label>
       <input
-        className="w-full"
+        className="w-full text-input"
         type="text"
         value={description}
         onChange={(e) => {
+          setMetadata({ name, description:e.target.value, count })
           setDescription(e.target.value)
-          updateMetadata()
         }}
         placeholder="Description"
       />
       <label className="text-sm">Count</label>
       <input
-        className="w-full"
+        className="w-full text-input"
         type="number"
         value={count}
         onChange={(e) => {
+          setMetadata({ name, description, count: parseInt(e.target.value) })
           setCount(parseInt(e.target.value))
-          updateMetadata()
         }}
+        disabled={images.length !== 1}
       />
     </div>
   )

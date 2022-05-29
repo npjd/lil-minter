@@ -9,11 +9,17 @@ export default function ConfigureDeployment({
   setMetadata,
   images,
   setImages,
+  setState,
 }: {
   metadata: { name: string; description: string; count: number }
-  setMetadata: (metadata: { name: string; description: string; count:number}) => void
+  setMetadata: (metadata: {
+    name: string
+    description: string
+    count: number
+  }) => void
   images: ImageListType
   setImages: (images: ImageListType) => void
+  setState: (state: 'ping') => void
 }) {
   return (
     <div>
@@ -25,9 +31,12 @@ export default function ConfigureDeployment({
             metadata={metadata}
             setMetadata={setMetadata}
           />
-          <ViewImages images={images} />
+          <ViewImages images={images} metadata={metadata} />
         </div>
       )}
+      <button className="btn-primary" onClick={() => setState('ping')}>
+        Next
+      </button>
     </div>
   )
 }
