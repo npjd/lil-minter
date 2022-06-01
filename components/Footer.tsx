@@ -9,8 +9,8 @@ export default function Footer() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{" "}
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
+          Made with ❤️ by Nima Pourjafar
+          {/* <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} /> */}
         </a>
       </footer>
   )

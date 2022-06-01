@@ -34,9 +34,10 @@ export default function ConfigureDeployment({
           <ViewImages images={images} metadata={metadata} />
         </div>
       )}
-      <button className="btn-primary" onClick={() => setState('ping')}>
+      {images.length >= 1 && (
+      <button className="btn-primary mt-4" onClick={() => setState('ping')}>
         Next
-      </button>
+      </button>)}
     </div>
   )
 }

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { ImageListType } from 'react-images-uploading'
 import { NFTStorage, File } from 'nft.storage'
+import { CircularProgressbar } from 'react-circular-progressbar'
+import 'react-circular-progressbar/dist/styles.css'
 
 export default function Pinging({
   images,
@@ -13,12 +15,19 @@ export default function Pinging({
     count: number
   }
 }) {
-  const [state, setState] = useState<'pinging' | 'pinged'>('pinging')
+  const [progress, setProgress] = useState(0)
+  const [state, setState] = useState<'pinning' | 'pinned'>('pinning')
   const renderMetadataString = (string: string, index: number): string => {
     let newString = string.replace('`index`', index.toString())
     newString = newString.replace('`count`', metadata.count.toString())
     return newString
   }
+
+  useEffect(() => {
+    if (progress == 100) {
+      setState('pinned')
+    }
+  }, [progress])
 
   const pinIPFS = () => {
     if (process.env.NFT_STORAGE_KEY == undefined) {
@@ -26,7 +35,7 @@ export default function Pinging({
       return
     }
     const nftstorage = new NFTStorage({ token: process.env.NFT_STORAGE_KEY })
-    images.forEach( async (image, index) => {
+    images.forEach(async (image, index) => {
       if (image.file == undefined) {
         console.log('image.file is undefined')
         return
@@ -43,13 +52,26 @@ export default function Pinging({
       })
       console.log('NFT #' + (index + 1) + ' stored')
       console.log('Metadata URL: ' + metadataFile.url)
+      setProgress(((index + 1) * 100) / images.length)
     })
-    
   }
 
   useEffect(() => {
     pinIPFS()
   }, [])
 
-  return <div>{state === 'pinging' ? <h1>Pinging</h1> : <h1>Pinged!</h1>}</div>
+  return (
+    <div className="flex flex-col items-center">
+      <div style={{width:200,height:200}}>
+        <CircularProgressbar value={progress} text={`${progress}%`} />
+      </div>
+      {state == 'pinned' && (
+        <div>
+          <p>
+            <b>Pinning complete!</b>
+          </p>
+        </div>
+      )}
+    </div>
+  )
 }

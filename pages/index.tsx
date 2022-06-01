@@ -14,14 +14,18 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <nav>
+        <div className="flex flex-row-reverse  w-full h-16 -ml-10 mt-8">
+          <ConnectWallet />
+        </div>
+      </nav>
+
       <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
         <Hero />
-        <ConnectWallet/>
 
         <div className="mt-6 w-5/6 ">
-          <SubmitNFTForm/>
+          <SubmitNFTForm />
         </div>
-
       </main>
 
       <Footer />

@@ -45,7 +45,7 @@ export default function EditMetadata({
       />
       <label className="text-sm">Count</label>
       <input
-        className="w-full text-input"
+        className="w-full text-input disabled:cursor-not-allowed"
         type="number"
         value={count}
         onChange={(e) => {
