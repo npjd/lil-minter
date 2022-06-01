@@ -44,10 +44,13 @@ export default function SubmitNFTForm() {
             metadata={metadata}
             setNfts={setNfts}
             nfts={nfts}
+            setWebPageState={setState}
           />
         )
       case 'assign':
-        return <AssignAddresses nfts={nfts} setNfts={setNfts} />
+        return (
+          <AssignAddresses nfts={nfts} setNfts={setNfts} metadata={metadata} />
+        )
       case 'confirm':
         return (
           // <ConfigureDeployment metadata={metadata} setMetadata={setMetadata} />

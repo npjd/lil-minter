@@ -10,6 +10,7 @@ export default function Pinging({
   metadata,
   setNfts,
   nfts,
+  setWebPageState,
 }: {
   images: ImageListType
   metadata: {
@@ -19,6 +20,9 @@ export default function Pinging({
   }
   setNfts: (nfts: NFT[]) => void
   nfts: NFT[]
+  setWebPageState: (
+    state: 'deploy' | 'configure' | 'ping' | 'assign' | 'confirm'
+  ) => void
 }) {
   const [progress, setProgress] = useState(0)
   const [state, setState] = useState<'pinning' | 'pinned'>('pinning')
@@ -131,6 +135,15 @@ export default function Pinging({
           <p>
             <b>Pinning complete!</b>
           </p>
+          <button
+            className="btn-primary"
+            onClick={(e) => {
+              e.preventDefault()
+              setWebPageState('assign')
+            }}
+          >
+            Next
+          </button>
         </div>
       )}
     </div>
