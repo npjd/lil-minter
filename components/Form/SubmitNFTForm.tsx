@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { ImageListType } from 'react-images-uploading'
+import NFT from '../../types/NFT'
 import Pinging from '../Pinging/Pinging'
+import AssignAddresses from './AssignAddresses'
 import ConfigureDeployment from './ConfigureDeployment'
-
 import DeployContract from './DeployContract'
-import ProgressBar from './ProgressBar'
 
 export default function SubmitNFTForm() {
   const [state, setState] = useState<
@@ -16,6 +16,7 @@ export default function SubmitNFTForm() {
     description: string
     count: number
   }>({ name: '', description: '', count: 0 })
+  const [nfts, setNfts] = useState<NFT[]>([])
   const [images, setImages] = useState<ImageListType>([])
   const renderForm = () => {
     switch (state) {
@@ -37,7 +38,16 @@ export default function SubmitNFTForm() {
           />
         )
       case 'ping':
-        return <Pinging images={images} metadata={metadata} />
+        return (
+          <Pinging
+            images={images}
+            metadata={metadata}
+            setNfts={setNfts}
+            nfts={nfts}
+          />
+        )
+      case 'assign':
+        return <AssignAddresses nfts={nfts} setNfts={setNfts} />
       case 'confirm':
         return (
           // <ConfigureDeployment metadata={metadata} setMetadata={setMetadata} />
@@ -45,22 +55,6 @@ export default function SubmitNFTForm() {
         )
     }
   }
-  // const stateToProgress = (): number => {
-  //   switch (state) {
-  //     case 'connect':
-  //       return 25
-  //     case 'deploy':
-  //       return 50
-  //     case 'configure':
-  //       return 75
-  //     case 'confirm':
-  //       return 100
-  //   }
-  // }
-  return (
-    <div>
-      {/* <ProgressBar progress={stateToProgress()} /> */}
-      {renderForm()}
-    </div>
-  )
+
+  return <div>{renderForm()}</div>
 }

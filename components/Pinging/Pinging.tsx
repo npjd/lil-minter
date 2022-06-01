@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { ImageListType } from 'react-images-uploading'
-import { NFTStorage, File } from 'nft.storage'
+import { NFTStorage } from 'nft.storage'
 import { CircularProgressbar } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
+import NFT from '../../types/NFT'
 
 export default function Pinging({
   images,
   metadata,
+  setNfts,
+  nfts,
 }: {
   images: ImageListType
   metadata: {
@@ -14,6 +17,8 @@ export default function Pinging({
     description: string
     count: number
   }
+  setNfts: (nfts: NFT[]) => void
+  nfts: NFT[]
 }) {
   const [progress, setProgress] = useState(0)
   const [state, setState] = useState<'pinning' | 'pinned'>('pinning')
@@ -29,31 +34,87 @@ export default function Pinging({
     }
   }, [progress])
 
-  const pinIPFS = () => {
+  const pinIPFS = async () => {
     if (process.env.NFT_STORAGE_KEY == undefined) {
       console.log('NFT_STORAGE_KEY is undefined')
       return
     }
     const nftstorage = new NFTStorage({ token: process.env.NFT_STORAGE_KEY })
-    images.forEach(async (image, index) => {
+    if (images.length > 1) {
+      images.forEach(async (image, index) => {
+        if (image.file == undefined) {
+          console.log('image.file is undefined')
+          return
+        }
+        const parsedName = renderMetadataString(metadata.name, index + 1)
+        const parsedDescription = renderMetadataString(
+          metadata.description,
+          index + 1
+        )
+        const metadataFile = await nftstorage.store({
+          image: image.file,
+          name: parsedName,
+          description: parsedDescription,
+        })
+        console.log('NFT #' + (index + 1) + ' stored')
+        console.log('Metadata URL: ' + metadataFile.url)
+        if (metadataFile.url.tag?.hash == undefined) {
+          console.log('metadataFile.url.tag.hash is undefined')
+          return
+        }
+
+        setProgress(((index + 1) * 100) / images.length)
+        // concat nft to current nfts state
+        setNfts([
+          ...nfts,
+          {
+            name: parsedName,
+            description: parsedDescription,
+            image: image.file,
+            uri: metadataFile.url.tag?.hash,
+            address: '',
+          },
+        ])
+      })
+    } else {
+      const image = images[0]
       if (image.file == undefined) {
-        console.log('image.file is undefined')
+        console.log('image is undefined')
         return
       }
-      const parsedName = renderMetadataString(metadata.name, index + 1)
-      const parsedDescription = renderMetadataString(
-        metadata.description,
-        index + 1
-      )
-      const metadataFile = await nftstorage.store({
-        image: image.file,
-        name: parsedName,
-        description: parsedDescription,
-      })
-      console.log('NFT #' + (index + 1) + ' stored')
-      console.log('Metadata URL: ' + metadataFile.url)
-      setProgress(((index + 1) * 100) / images.length)
-    })
+
+      for (let i = 0; i < metadata.count; i++) {
+        const parsedName = renderMetadataString(metadata.name, i + 1)
+        const parsedDescription = renderMetadataString(
+          metadata.description,
+          i + 1
+        )
+        const metadataFile = await nftstorage.store({
+          image: image.file,
+          name: parsedName,
+          description: parsedDescription,
+        })
+        console.log('NFT #' + (i + 1) + ' stored')
+        console.log('Metadata URL: ' + metadataFile.url)
+        if (metadataFile.url.tag?.hash == undefined) {
+          console.log('metadataFile.url.tag.hash is undefined')
+          return
+        }
+
+        setProgress(((i + 1) * 100) / metadata.count)
+        // concat nft to current nfts state
+        setNfts([
+          ...nfts,
+          {
+            name: parsedName,
+            description: parsedDescription,
+            image: image.file,
+            uri: metadataFile.url.tag?.hash,
+            address: '',
+          },
+        ])
+      }
+    }
   }
 
   useEffect(() => {
@@ -62,7 +123,7 @@ export default function Pinging({
 
   return (
     <div className="flex flex-col items-center">
-      <div style={{width:200,height:200}}>
+      <div style={{ width: 200, height: 200 }}>
         <CircularProgressbar value={progress} text={`${progress}%`} />
       </div>
       {state == 'pinned' && (
