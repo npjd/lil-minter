@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { ethers } from 'ethers'
+import { useStatus } from '@cfxjs/use-wallet/dist/ethereum'
 import {
   abi,
   bytecode,
@@ -7,11 +8,12 @@ import {
 
 export default function DeployContract({
   setContractAddress,
-  setState
+  setState,
 }: {
   setContractAddress: (contractAddress: string) => void
-  setState: (state: "configure") => void
+  setState: (state: 'configure') => void
 }) {
+  const walletStatus = useStatus()
   const [name, setName] = useState('')
   const [tokenSymbol, setTokenSymbol] = useState('')
   const [status, setStatus] = useState<'deploying' | 'none' | 'error' | 'good'>(
@@ -19,11 +21,16 @@ export default function DeployContract({
   )
 
   const deployContract = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (name =="" || tokenSymbol=="") {
-      setStatus('error')
-      return;
-    }
     e.preventDefault()
+    if (name == '' || tokenSymbol == '') {
+      setStatus('error')
+      return
+    }
+    if (walletStatus == 'not-active') {
+      setStatus('error')
+      return
+    }
+
     console.log('deploying contract')
     setStatus('deploying')
     const { ethereum } = window as any
@@ -35,7 +42,7 @@ export default function DeployContract({
 
     try {
       setContractAddress(deployContract.address)
-      setState("configure")
+      setState('configure')
     } catch (e) {
       setStatus('error')
     }
@@ -57,9 +64,15 @@ export default function DeployContract({
         onChange={(e) => setTokenSymbol(e.target.value)}
         className="text-input"
       />
-      <button className="btn-primary" onClick={deployContract} disabled={status=="deploying"}>Deploy</button>
-      {status=="deploying" && <div>Deploying...</div>}
-      {status=="error" && <div>Error</div>}
+      <button
+        className="btn-primary"
+        onClick={deployContract}
+        disabled={status == 'deploying'}
+      >
+        Deploy
+      </button>
+      {status == 'deploying' && <div>Deploying...</div>}
+      {status == 'error' && <div>Error</div>}
     </div>
   )
 }

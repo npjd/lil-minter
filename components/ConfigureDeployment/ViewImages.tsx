@@ -31,7 +31,7 @@ export default function ViewImages({
           </div>
         </div>
       ) : (
-        <div className="flex overflow-x-auto w-1/2 space-x-4">
+        <div className="flex flex-row overflow-x-auto w-1/2 space-x-4">
           {/* TODO: this isn't working ffs */}
           {images.map((image, index) => (
             <ImageCard

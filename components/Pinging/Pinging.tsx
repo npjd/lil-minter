@@ -44,6 +44,7 @@ export default function Pinging({
       return
     }
     const nftstorage = new NFTStorage({ token: process.env.NFT_STORAGE_KEY })
+    const newArray: NFT[] = []
     if (images.length > 1) {
       images.forEach(async (image, index) => {
         if (image.file == undefined) {
@@ -62,23 +63,15 @@ export default function Pinging({
         })
         console.log('NFT #' + (index + 1) + ' stored')
         console.log('Metadata URL: ' + metadataFile.url)
-        if (metadataFile.url.tag?.hash == undefined) {
-          console.log('metadataFile.url.tag.hash is undefined')
-          return
-        }
-
+        const uri = metadataFile.url.replace('ipfs://', '')
         setProgress(((index + 1) * 100) / images.length)
-        // concat nft to current nfts state
-        setNfts([
-          ...nfts,
-          {
-            name: parsedName,
-            description: parsedDescription,
-            image: image.file,
-            uri: metadataFile.url.tag?.hash,
-            address: '',
-          },
-        ])
+        newArray.push({
+          name: parsedName,
+          description: parsedDescription,
+          image: image,
+          uri: uri,
+          address: '',
+        })
       })
     } else {
       const image = images[0]
@@ -100,29 +93,27 @@ export default function Pinging({
         })
         console.log('NFT #' + (i + 1) + ' stored')
         console.log('Metadata URL: ' + metadataFile.url)
-        if (metadataFile.url.tag?.hash == undefined) {
-          console.log('metadataFile.url.tag.hash is undefined')
-          return
-        }
+        const uri = metadataFile.url.replace('ipfs://', '')
 
         setProgress(((i + 1) * 100) / metadata.count)
-        // concat nft to current nfts state
-        setNfts([
-          ...nfts,
-          {
-            name: parsedName,
-            description: parsedDescription,
-            image: image.file,
-            uri: metadataFile.url.tag?.hash,
-            address: '',
-          },
-        ])
+        newArray.push({
+          name: parsedName,
+          description: parsedDescription,
+          image: image,
+          uri: uri,
+          address: '',
+        })
       }
     }
+    console.log("new array",newArray)
+    setNfts(newArray)
+    console.log('NFTs stored', nfts)
   }
 
   useEffect(() => {
-    pinIPFS()
+    pinIPFS().then(() => {
+      console.log(nfts)
+    })
   }, [])
 
   return (

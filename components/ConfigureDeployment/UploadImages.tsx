@@ -21,30 +21,29 @@ export default function UploadImages({
         onChange={onChange}
         maxNumber={50}
         dataURLKey="data_url"
-        acceptType={[ 'png']}
+        acceptType={['png']}
       >
-        {({
-          onImageUpload,
-          onImageRemoveAll,
-          isDragging,
-          dragProps,
-        }) => (
+        {({ onImageUpload, onImageRemoveAll, isDragging, dragProps }) => (
           // write your building UI
           <div className="upload__image-wrapper">
-            <button
-              className={'btn-primary' + (isDragging ? ' bg-green-500' : '')}
-              onClick={onImageUpload}
-              {...dragProps}
-            >
-              {isDragging ? 'Drop Images' : 'Upload or Drop Image(s)'}
-            </button>
+            {images.length == 0 && (
+              <button
+                className={'btn-primary' + (isDragging ? ' bg-green-500' : '')}
+                onClick={onImageUpload}
+                {...dragProps}
+              >
+                {isDragging ? 'Drop Images' : 'Upload or Drop Image(s)'}
+              </button>
+            )}
             &nbsp;
-            <button
-              onClick={onImageRemoveAll}
-              className="btn-primary bg-red-500 hover:bg-red-700"
-            >
-              Remove all images
-            </button>
+            {images.length > 0 && (
+              <button
+                onClick={onImageRemoveAll}
+                className="btn-primary bg-red-500 hover:bg-red-700"
+              >
+                Remove all images
+              </button>
+            )}
           </div>
         )}
       </ImageUploading>
