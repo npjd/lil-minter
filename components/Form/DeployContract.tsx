@@ -5,6 +5,7 @@ import {
   abi,
   bytecode,
 } from '../../artifacts/contracts/MinterNFT.sol/MinterNFT.json'
+import { validAddress } from '../../util/validAddress'
 
 export default function DeployContract({
   setContractAddress,
@@ -14,6 +15,7 @@ export default function DeployContract({
   setState: (state: 'configure') => void
 }) {
   const walletStatus = useStatus()
+  const [address, setAddress] = useState('')
   const [name, setName] = useState('')
   const [tokenSymbol, setTokenSymbol] = useState('')
   const [status, setStatus] = useState<'deploying' | 'none' | 'error' | 'good'>(
@@ -70,6 +72,27 @@ export default function DeployContract({
         disabled={status == 'deploying'}
       >
         Deploy
+      </button>
+      <p>Or</p>
+      <input
+        type="text"
+        value={address}
+        onChange={(e) => setAddress(e.target.value)}
+        className="text-input"
+      />
+      <button
+        className="btn-primary disabled:bg-gray-500 disabled:hover:bg-gray-600"
+        onClick={(e) => {
+          e.preventDefault()
+          if (!validAddress(address)) {
+            setStatus('error')
+            return
+          }
+          setState('configure')
+        }}
+        disabled={!validAddress(address)}
+      >
+        Enter
       </button>
       {status == 'deploying' && <div>Deploying...</div>}
       {status == 'error' && <div>Error</div>}

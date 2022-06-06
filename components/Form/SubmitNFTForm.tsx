@@ -9,7 +9,7 @@ import DeployContract from './DeployContract'
 export default function SubmitNFTForm() {
   const [state, setState] = useState<
     'deploy' | 'configure' | 'ping' | 'assign' | 'confirm'
-  >('configure')
+  >('deploy')
   const [contractAddress, setContractAddress] = useState<string | null>(null)
   const [metadata, setMetadata] = useState<{
     name: string

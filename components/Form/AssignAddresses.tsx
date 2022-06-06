@@ -2,6 +2,7 @@ import React from 'react'
 import NFT from '../../types/NFT'
 import ImageCard from '../ConfigureDeployment/ImageCard'
 import Papa from 'papaparse'
+import { validAddress } from '../../util/validAddress'
 
 export default function AssignAddresses({
   nfts,
@@ -16,9 +17,7 @@ export default function AssignAddresses({
     count: number
   }
 }) {
-  const validAddress = (address: string) => {
-    return /^(0x){1}[0-9a-fA-F]{40}$/i.test(address)
-  }
+  
 
   const csvUploadHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files == null) {
