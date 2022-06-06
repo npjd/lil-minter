@@ -24,20 +24,23 @@ export default function AssignAddresses({
       return
     }
     Papa.parse(event.target.files[0], {
-      header: true,
+      header: false,
       skipEmptyLines: true,
       complete: function (results) {
-        // go through each row and set the address in each row's index to the nft object respectivly
         const newNfts:NFT[]= []
-        results.data.forEach((row, index) => {
-          if (index >= nfts.length) {
-            return
-          }
-          // console.log("row",Object.values(row))
-          const nft = nfts[index]
-          // nft.address = Object.values(row)[0] as string
-          newNfts.push(nft)
+        // @ts-ignore
+        const addresses = results.data.map((row) => row[0])
+
+        addresses.forEach((address, index) => {
+          newNfts.push({
+            uri: nfts[index].uri,
+            image: nfts[index].image,
+            name: nfts[index].name,
+            address: address,
+            description: nfts[index].description,
+          })
         })
+      
         setNfts(newNfts)
       },
     })
