@@ -60,7 +60,7 @@ export default function AssignAddresses({
       <div className="flex flex-row overflow-x-auto space-x-4">
         {nfts.map((nft, index) => {
           return (
-            <div>
+            <div key={index}>
               <ImageCard image={nft.image} index={index} metadata={metadata} />
               <input
                 className="text-input"
