@@ -6,6 +6,7 @@ import {
   bytecode,
 } from '../../artifacts/contracts/MinterNFT.sol/MinterNFT.json'
 import { validAddress } from '../../util/validAddress'
+import { useAlert } from 'react-alert'
 
 export default function DeployContract({
   setContractAddress,
@@ -14,40 +15,43 @@ export default function DeployContract({
   setContractAddress: (contractAddress: string) => void
   setState: (state: 'configure') => void
 }) {
+  const alert = useAlert()
   const walletStatus = useStatus()
   const [address, setAddress] = useState('')
   const [name, setName] = useState('')
   const [tokenSymbol, setTokenSymbol] = useState('')
-  const [status, setStatus] = useState<'deploying' | 'none' | 'error' | 'good'>(
-    'none'
-  )
+  const [deploying, setDeploying] = useState(false)
 
   const deployContract = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
+    setDeploying(true)
     if (name == '' || tokenSymbol == '') {
-      setStatus('error')
+      alert.error('Please enter a name and token symbol')
+      setDeploying(false)
       return
     }
     if (walletStatus == 'not-active') {
-      setStatus('error')
+      alert.error('Please connect wallet')
+      setDeploying(false)
       return
     }
 
     console.log('deploying contract')
-    setStatus('deploying')
+    alert.info('Deploying contract...')
     const { ethereum } = window as any
     const provider = new ethers.providers.Web3Provider(ethereum)
     const signer = provider.getSigner()
     const NFTContract = new ethers.ContractFactory(abi, bytecode, signer)
 
-    const deployContract = await NFTContract.deploy(name, tokenSymbol)
-
     try {
+      const deployContract = await NFTContract.deploy(name, tokenSymbol)
       setContractAddress(deployContract.address)
       setState('configure')
     } catch (e) {
-      setStatus('error')
+      alert.error("An error occurred when deploying contract")
     }
+    setDeploying(false)
+    
   }
 
   return (
@@ -69,7 +73,7 @@ export default function DeployContract({
       <button
         className="btn-primary"
         onClick={deployContract}
-        disabled={status == 'deploying'}
+        disabled={deploying}
       >
         Deploy
       </button>
@@ -77,7 +81,10 @@ export default function DeployContract({
       <input
         type="text"
         value={address}
-        onChange={(e) => setAddress(e.target.value)}
+        onChange={(e) => {
+          setAddress(e.target.value)
+          setContractAddress(e.target.value)
+        }}
         className="text-input"
       />
       <button
@@ -85,7 +92,7 @@ export default function DeployContract({
         onClick={(e) => {
           e.preventDefault()
           if (!validAddress(address)) {
-            setStatus('error')
+            alert.error("Invalid address")
             return
           }
           setState('configure')
@@ -94,8 +101,7 @@ export default function DeployContract({
       >
         Enter
       </button>
-      {status == 'deploying' && <div>Deploying...</div>}
-      {status == 'error' && <div>Error</div>}
+
     </div>
   )
 }

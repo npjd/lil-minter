@@ -21,19 +21,22 @@ export default function UploadImages({
         onChange={onChange}
         maxNumber={50}
         dataURLKey="data_url"
-        acceptType={['png','jpg','jpeg']}
+        acceptType={['png', 'jpg', 'jpeg']}
       >
         {({ onImageUpload, onImageRemoveAll, isDragging, dragProps }) => (
           // write your building UI
           <div className="upload__image-wrapper">
             {images.length == 0 && (
-              <button
-                className={'btn-primary' + (isDragging ? ' bg-green-500' : '')}
+              <div
+                className={
+                  'w-full h-60 bg-slate-200 cursor-pointer rounded grid place-items-center hover:bg-slate-300 ' +
+                  (isDragging ? ' bg-green-500' : '')
+                }
                 onClick={onImageUpload}
                 {...dragProps}
               >
-                {isDragging ? 'Drop Images' : 'Upload or Drop Image(s)'}
-              </button>
+                <p className="text-2xl">{isDragging ? 'Drop Images' : 'Upload or Drop Image(s)'}</p>
+              </div>
             )}
             &nbsp;
             {images.length > 0 && (
