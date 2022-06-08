@@ -2,6 +2,7 @@ import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
 import NFT from '../../types/NFT'
 import { abi } from '../../artifacts/contracts/MinterNFT.sol/MinterNFT.json'
+import { useAlert } from 'react-alert'
 
 export default function Mint({
   nfts,
@@ -11,9 +12,11 @@ export default function Mint({
   address: string
 }) {
   const [minting, setMinting] = useState<boolean>(false)
+  const alert = useAlert()
   const [status, setStatus] = useState<'success' | 'error'>('success')
   const mintNFTs = async () => {
     setMinting(true)
+    alert.info('Minting NFTs...')
     const { ethereum } = window as any
     const provider = new ethers.providers.Web3Provider(ethereum)
     const signer = provider.getSigner()
@@ -24,10 +27,12 @@ export default function Mint({
       const val = await contract.batchMint(toAddresses, uris)
       console.log(val)
       setMinting(false)
+      alert.success("Minted!")
       setStatus('success')
     } catch (e) {
       console.log(e)
       setMinting(false)
+      alert.error("Error minting NFTs")
       setStatus('error')
     }
   }
