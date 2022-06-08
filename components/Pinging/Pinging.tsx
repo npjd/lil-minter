@@ -21,7 +21,7 @@ export default function Pinging({
   setNfts: (nfts: NFT[]) => void
   nfts: NFT[]
   setWebPageState: (
-    state: 'deploy' | 'configure' | 'ping' | 'assign' | 'confirm'
+    state: 'deploy' | 'configure' | 'ping' | 'assign' | 'mint'
   ) => void
 }) {
   const [progress, setProgress] = useState(0)

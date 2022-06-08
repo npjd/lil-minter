@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { ImageListType } from 'react-images-uploading'
 import NFT from '../../types/NFT'
+import Mint from '../Mint/Mint'
 import Pinging from '../Pinging/Pinging'
 import AssignAddresses from './AssignAddresses'
 import ConfigureDeployment from './ConfigureDeployment'
@@ -8,7 +9,7 @@ import DeployContract from './DeployContract'
 
 export default function SubmitNFTForm() {
   const [state, setState] = useState<
-    'deploy' | 'configure' | 'ping' | 'assign' | 'confirm'
+    'deploy' | 'configure' | 'ping' | 'assign' | 'mint'
   >('deploy')
   const [contractAddress, setContractAddress] = useState<string | null>(null)
   const [metadata, setMetadata] = useState<{
@@ -49,12 +50,18 @@ export default function SubmitNFTForm() {
         )
       case 'assign':
         return (
-          <AssignAddresses nfts={nfts} setNfts={setNfts} metadata={metadata} />
+          <AssignAddresses
+            nfts={nfts}
+            setNfts={setNfts}
+            metadata={metadata}
+            setWebPageState={setState}
+          />
         )
-      case 'confirm':
-        return (
-          // <ConfigureDeployment metadata={metadata} setMetadata={setMetadata} />
-          <div>lol</div>
+      case 'mint':
+        return contractAddress ? (
+          <Mint nfts={nfts} address={contractAddress} />
+        ) : (
+          <p>Contract not found</p>
         )
     }
   }

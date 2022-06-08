@@ -21,7 +21,7 @@ export default function UploadImages({
         onChange={onChange}
         maxNumber={50}
         dataURLKey="data_url"
-        acceptType={['png']}
+        acceptType={['png','jpg','jpeg']}
       >
         {({ onImageUpload, onImageRemoveAll, isDragging, dragProps }) => (
           // write your building UI

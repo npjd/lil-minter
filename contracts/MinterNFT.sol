@@ -39,7 +39,7 @@ contract MinterNFT is ERC721, ERC721URIStorage, AccessControlEnumerable {
     {
         require(tos.length == uris.length, 'mismatch in length');
         for (uint256 ii = 0; ii < tos.length; ii++) {
-            _safeMint(tos[ii], uris[ii]);
+            safeMint(tos[ii], uris[ii]);
         }
     }
 

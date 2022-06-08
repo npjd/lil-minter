@@ -8,6 +8,7 @@ export default function AssignAddresses({
   nfts,
   setNfts,
   metadata,
+  setWebPageState,
 }: {
   nfts: NFT[]
   setNfts: (nfts: NFT[]) => void
@@ -16,9 +17,10 @@ export default function AssignAddresses({
     description: string
     count: number
   }
+  setWebPageState: (
+    state: 'deploy' | 'configure' | 'ping' | 'assign' | 'mint'
+  ) => void
 }) {
-  
-
   const csvUploadHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files == null) {
       return
@@ -27,7 +29,7 @@ export default function AssignAddresses({
       header: false,
       skipEmptyLines: true,
       complete: function (results) {
-        const newNfts:NFT[]= []
+        const newNfts: NFT[] = []
         // @ts-ignore
         const addresses = results.data.map((row) => row[0])
 
@@ -40,7 +42,7 @@ export default function AssignAddresses({
             description: nfts[index].description,
           })
         })
-      
+
         setNfts(newNfts)
       },
     })
@@ -78,7 +80,13 @@ export default function AssignAddresses({
         })}
       </div>
       {nfts.every((nft) => validAddress(nft.address)) && (
-        <button className="btn-primary bg-green-500 hover:bg-green-600">
+        <button
+          className="btn-primary bg-green-500 hover:bg-green-600"
+          onClick={(e) => {
+            e.preventDefault()
+            setWebPageState('mint')
+          }}
+        >
           Mint!
         </button>
       )}
