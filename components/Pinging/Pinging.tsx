@@ -51,10 +51,7 @@ export default function Pinging({
         if (image.file == undefined) {
           console.log('image.file is undefined')
           return
-        }
-        // change name of image
-        
-        
+        }        
 
         const parsedName = renderMetadataString(metadata.name, index + 1)
         const parsedDescription = renderMetadataString(
