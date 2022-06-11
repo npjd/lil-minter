@@ -16,9 +16,9 @@ export default function ViewImages({
   return (
     <>
       {images.length == 1 ? (
-        <div className="flex relative">
+        <div className="flex relative ">
           {metadata.count >= 1 && (
-            <div className=" absolute">
+            <div>
               <ImageCard image={images[0]} index={1} metadata={metadata} />
             </div>
           )}

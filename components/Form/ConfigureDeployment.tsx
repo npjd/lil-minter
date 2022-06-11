@@ -25,7 +25,7 @@ export default function ConfigureDeployment({
     <div>
       <UploadImages setImages={setImages} images={images} />
       {images.length >= 1 && (
-        <div className="flex flex-row justify-evenly">
+        <div className="flex flex-row justify-evenly items-center my-4">
           <EditMetadata
             images={images}
             metadata={metadata}

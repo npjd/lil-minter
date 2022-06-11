@@ -19,7 +19,7 @@ export default function EditMetadata({
   const [count, setCount] = useState(images.length)
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col space-y-2 text-left my-5">
       <p> Use `count` and `index` </p>
       <label className="text-sm">Name</label>
       <input
