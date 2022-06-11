@@ -1,5 +1,6 @@
 import React from 'react'
 import ImageUploading, { ImageListType } from 'react-images-uploading'
+import Upload from '../icons/Upload'
 
 export default function UploadImages({
   images,
@@ -29,13 +30,14 @@ export default function UploadImages({
             {images.length == 0 && (
               <div
                 className={
-                  'w-full h-60 bg-slate-200 cursor-pointer rounded grid place-items-center hover:bg-slate-300 ' +
-                  (isDragging ? ' bg-green-500' : '')
+                  'w-full h-60 bg-gray-100 cursor-pointer rounded grid place-items-center -space-y-11 hover:bg-slate-200 border-2 border-dashed border-gray-400 ' +
+                  (isDragging ? ' bg-green-300' : '')
                 }
                 onClick={onImageUpload}
                 {...dragProps}
               >
-                <p className="text-2xl">{isDragging ? 'Drop Images' : 'Upload or Drop Image(s)'}</p>
+                <Upload/>
+                <p className="text-xl">{isDragging ? 'Drop Images' : 'Upload or Drop Image(s)'}</p>
               </div>
             )}
             &nbsp;
