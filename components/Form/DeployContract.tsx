@@ -17,6 +17,7 @@ export default function DeployContract({
 }) {
   const alert = useAlert()
   const walletStatus = useStatus()
+  const [setting, setSetting] = useState<'deploy' | 'import' | ''>('')
   const [address, setAddress] = useState('')
   const [name, setName] = useState('')
   const [tokenSymbol, setTokenSymbol] = useState('')
@@ -48,60 +49,103 @@ export default function DeployContract({
       setContractAddress(deployContract.address)
       setState('configure')
     } catch (e) {
-      alert.error("An error occurred when deploying contract")
+      alert.error('An error occurred when deploying contract')
     }
     setDeploying(false)
-    
+  }
+
+  const renderSetting = () => {
+    if (setting == 'deploy') {
+      return (
+        <>
+          <label>Name</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="text-input"
+          />
+          <label>Token Symbol</label>
+          <input
+            type="text"
+            value={tokenSymbol}
+            onChange={(e) => setTokenSymbol(e.target.value)}
+            className="text-input"
+          />
+          <button
+            className="btn-primary"
+            onClick={deployContract}
+            disabled={deploying}
+          >
+            Deploy
+          </button>
+        </>
+      )
+    } else if (setting == 'import') {
+      return (
+        <>
+          <input
+            type="text"
+            value={address}
+            onChange={(e) => {
+              setAddress(e.target.value)
+              setContractAddress(e.target.value)
+            }}
+            className="text-input"
+          />
+          <button
+            className="btn-primary disabled:bg-gray-500 disabled:hover:bg-gray-600"
+            onClick={(e) => {
+              e.preventDefault()
+              if (!validAddress(address)) {
+                alert.error('Invalid address')
+                return
+              }
+              setState('configure')
+            }}
+            disabled={!validAddress(address)}
+          >
+            Enter
+          </button>
+        </>
+      )
+    } else {
+      return (
+        <div className="flex flex-row justify-center space-x-4">
+          <button
+            className="btn-primary"
+            onClick={() => {
+              setSetting('deploy')
+            }}
+          >
+            Deploy A New Contract
+          </button>
+          <button
+            className="btn-primary"
+            onClick={() => {
+              setSetting('import')
+            }}
+          >
+            Import an Existing Contract
+          </button>
+        </div>
+      )
+    }
   }
 
   return (
     <div className="flex flex-col space-y-2">
-      <label>Name</label>
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        className="text-input"
-      />
-      <label>Token Symbol</label>
-      <input
-        type="text"
-        value={tokenSymbol}
-        onChange={(e) => setTokenSymbol(e.target.value)}
-        className="text-input"
-      />
-      <button
-        className="btn-primary"
-        onClick={deployContract}
-        disabled={deploying}
-      >
-        Deploy
-      </button>
-      <p>Or</p>
-      <input
-        type="text"
-        value={address}
-        onChange={(e) => {
-          setAddress(e.target.value)
-          setContractAddress(e.target.value)
-        }}
-        className="text-input"
-      />
-      <button
-        className="btn-primary disabled:bg-gray-500 disabled:hover:bg-gray-600"
-        onClick={(e) => {
-          e.preventDefault()
-          if (!validAddress(address)) {
-            alert.error("Invalid address")
-            return
-          }
-          setState('configure')
-        }}
-        disabled={!validAddress(address)}
-      >
-        Enter
-      </button>
-
+      {renderSetting()}
+      {(setting == 'deploy' || setting == 'import') && (
+        <button
+          className="btn-primary bg-red-500 hover:bg-red-600"
+          onClick={() => {
+            setSetting('')
+          }}
+        >
+          Back
+        </button>
+      )}
     </div>
   )
 }
