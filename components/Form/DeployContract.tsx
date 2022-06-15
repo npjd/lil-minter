@@ -10,9 +10,11 @@ import { useAlert } from 'react-alert'
 
 export default function DeployContract({
   setContractAddress,
+  contractAddress,
   setState,
 }: {
   setContractAddress: (contractAddress: string) => void
+  contractAddress: string | null
   setState: (state: 'configure') => void
 }) {
   const alert = useAlert()
@@ -89,6 +91,7 @@ export default function DeployContract({
         <>
           <input
             type="text"
+            defaultValue={contractAddress ?? ''}
             value={address}
             onChange={(e) => {
               setAddress(e.target.value)

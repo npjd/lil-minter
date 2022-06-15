@@ -21,27 +21,32 @@ export default function SubmitNFTForm() {
   const [images, setImages] = useState<ImageListType>([])
 
   useEffect(() => {
-
     const storedAddress = localStorage.getItem('contractAddress')
     const storedMetadata = localStorage.getItem('metadata')
     const storedNfts = localStorage.getItem('nfts')
     const storedImages = localStorage.getItem('images')
 
-    if (storedAddress) {
+    if (storedAddress != null) {
       setContractAddress(storedAddress)
     }
-    if (storedMetadata) {
+    if (storedMetadata != null) {
       setMetadata(JSON.parse(storedMetadata))
     }
-    if (storedNfts) {
+
+    if (storedNfts != null) {
       setNfts(JSON.parse(storedNfts))
     }
-    if (storedImages) {
+    if (storedImages != null) {
       setImages(JSON.parse(storedImages))
     }
 
+    if (storedAddress != null) {
+      setState('configure')
+    }
+    if ((nfts.length == metadata.count) && (nfts.length > 0)) {
+      setState('assign')
+    }
   }, [])
-
 
   const renderForm = () => {
     switch (state) {
@@ -50,6 +55,7 @@ export default function SubmitNFTForm() {
           <DeployContract
             setContractAddress={setContractAddress}
             setState={setState}
+            contractAddress={contractAddress}
           />
         )
       case 'configure':
