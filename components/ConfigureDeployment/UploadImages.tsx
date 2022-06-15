@@ -11,7 +11,7 @@ export default function UploadImages({
 }) {
   const onChange = (imageList: ImageListType) => {
     setImages(imageList)
-    console.log(imageList)
+    localStorage.setItem('images', JSON.stringify(imageList))
   }
 
   return (

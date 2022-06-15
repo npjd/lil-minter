@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ImageListType } from 'react-images-uploading'
 import NFT from '../../types/NFT'
 import Mint from '../Mint/Mint'
@@ -19,6 +19,30 @@ export default function SubmitNFTForm() {
   }>({ name: '', description: '', count: 1 })
   const [nfts, setNfts] = useState<NFT[]>([])
   const [images, setImages] = useState<ImageListType>([])
+
+  useEffect(() => {
+
+    const storedAddress = localStorage.getItem('contractAddress')
+    const storedMetadata = localStorage.getItem('metadata')
+    const storedNfts = localStorage.getItem('nfts')
+    const storedImages = localStorage.getItem('images')
+
+    if (storedAddress) {
+      setContractAddress(storedAddress)
+    }
+    if (storedMetadata) {
+      setMetadata(JSON.parse(storedMetadata))
+    }
+    if (storedNfts) {
+      setNfts(JSON.parse(storedNfts))
+    }
+    if (storedImages) {
+      setImages(JSON.parse(storedImages))
+    }
+
+  }, [])
+
+
   const renderForm = () => {
     switch (state) {
       case 'deploy':

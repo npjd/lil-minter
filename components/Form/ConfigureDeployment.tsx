@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ImageListType } from 'react-images-uploading'
 import EditMetadata from '../ConfigureDeployment/EditMetadata'
 import UploadImages from '../ConfigureDeployment/UploadImages'
@@ -21,6 +21,8 @@ export default function ConfigureDeployment({
   setImages: (images: ImageListType) => void
   setState: (state: 'ping') => void
 }) {
+
+
   return (
     <div>
       <UploadImages setImages={setImages} images={images} />
