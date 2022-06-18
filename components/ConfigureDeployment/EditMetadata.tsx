@@ -40,7 +40,7 @@ export default function EditMetadata({
         value={description}
         onChange={(e) => {
           setMetadata({ name, description:e.target.value, count })
-          localStorage.setItem('metadata', JSON.stringify({ name:e.target.value, description:description, count:count }))
+          localStorage.setItem('metadata', JSON.stringify({ name, description:e.target.value, count:count }))
           setDescription(e.target.value)
         }}
         placeholder="Description"
@@ -52,7 +52,7 @@ export default function EditMetadata({
         value={count}
         onChange={(e) => {
           setMetadata({ name, description, count: parseInt(e.target.value) })
-          localStorage.setItem('metadata', JSON.stringify({ name:e.target.value, description:description, count:count }))
+          localStorage.setItem('metadata', JSON.stringify({ name, description:description, count:parseInt(e.target.value) }))
           setCount(parseInt(e.target.value))
         }}
         disabled={images.length !== 1}
