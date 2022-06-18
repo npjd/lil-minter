@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 import { useStatus } from '@cfxjs/use-wallet/dist/ethereum'
 import {
@@ -10,9 +10,11 @@ import { useAlert } from 'react-alert'
 
 export default function DeployContract({
   setContractAddress,
+  contractAddress,
   setState,
 }: {
   setContractAddress: (contractAddress: string) => void
+  contractAddress: string | null
   setState: (state: 'configure') => void
 }) {
   const alert = useAlert()
@@ -22,6 +24,8 @@ export default function DeployContract({
   const [name, setName] = useState('')
   const [tokenSymbol, setTokenSymbol] = useState('')
   const [deploying, setDeploying] = useState(false)
+
+
 
   const deployContract = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -47,6 +51,7 @@ export default function DeployContract({
     try {
       const deployContract = await NFTContract.deploy(name, tokenSymbol)
       setContractAddress(deployContract.address)
+      localStorage.setItem('contractAddress', deployContract.address)
       setState('configure')
     } catch (e) {
       alert.error('An error occurred when deploying contract')
@@ -86,6 +91,7 @@ export default function DeployContract({
         <>
           <input
             type="text"
+            defaultValue={contractAddress ?? ''}
             value={address}
             onChange={(e) => {
               setAddress(e.target.value)
@@ -102,6 +108,8 @@ export default function DeployContract({
                 return
               }
               setState('configure')
+              setContractAddress(address)
+              localStorage.setItem('contractAddress', address)
             }}
             disabled={!validAddress(address)}
           >

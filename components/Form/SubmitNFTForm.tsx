@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ImageListType } from 'react-images-uploading'
 import NFT from '../../types/NFT'
 import Mint from '../Mint/Mint'
@@ -19,6 +19,45 @@ export default function SubmitNFTForm() {
   }>({ name: '', description: '', count: 1 })
   const [nfts, setNfts] = useState<NFT[]>([])
   const [images, setImages] = useState<ImageListType>([])
+
+  useEffect(() => {
+    const storedAddress = localStorage.getItem('contractAddress')
+    const storedMetadata = localStorage.getItem('metadata')
+    const storedNfts = localStorage.getItem('nfts')
+    const storedImages = localStorage.getItem('images')
+
+    if (storedAddress != null) {
+      setContractAddress(storedAddress)
+    }
+    if (storedMetadata != null) {
+      setMetadata(JSON.parse(storedMetadata))
+    }
+
+    if (storedNfts != null) {
+      setNfts(JSON.parse(storedNfts))
+    }
+    if (storedImages != null) {
+      setImages(JSON.parse(storedImages))
+    }
+
+    if (storedAddress != null) {
+      setState('configure')
+    }
+    if (storedNfts != null && storedMetadata != null) {
+      if (
+        JSON.parse(storedNfts).length >= JSON.parse(storedMetadata).count &&
+        JSON.parse(storedNfts).length > 0
+      ) {
+        setState('assign')
+      } else if (
+        JSON.parse(storedNfts).length < JSON.parse(storedMetadata).count &&
+        JSON.parse(storedNfts).length > 0
+      ) {
+        setState('ping')
+      }
+    }
+  }, [])
+
   const renderForm = () => {
     switch (state) {
       case 'deploy':
@@ -26,6 +65,7 @@ export default function SubmitNFTForm() {
           <DeployContract
             setContractAddress={setContractAddress}
             setState={setState}
+            contractAddress={contractAddress}
           />
         )
       case 'configure':
