@@ -43,8 +43,13 @@ export default function SubmitNFTForm() {
     if (storedAddress != null) {
       setState('configure')
     }
-    if ((nfts.length == metadata.count) && (nfts.length > 0)) {
-      setState('assign')
+    if (storedNfts != null && storedMetadata != null) {
+      if (
+        JSON.parse(storedNfts).length == JSON.parse(storedMetadata).count &&
+        JSON.parse(storedNfts).length > 0
+      ) {
+        setState('assign')
+      }
     }
   }, [])
 

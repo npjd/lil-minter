@@ -4,6 +4,7 @@ import { NFTStorage } from 'nft.storage'
 import { CircularProgressbar } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import NFT from '../../types/NFT'
+import { dataURItoBlob } from '../../util/dataUriToBlob'
 
 export default function Pinging({
   images,
@@ -24,7 +25,9 @@ export default function Pinging({
     state: 'deploy' | 'configure' | 'ping' | 'assign' | 'mint'
   ) => void
 }) {
-  const [progress, setProgress] = useState(0)
+  const [progress, setProgress] = useState(
+    Math.round((nfts.length / metadata.count) * 100)
+  )
   const [state, setState] = useState<'pinning' | 'pinned'>('pinning')
   const renderMetadataString = (string: string, index: number): string => {
     let newString = string.replace('`index`', index.toString())
@@ -39,6 +42,7 @@ export default function Pinging({
   }, [progress])
 
   const pinIPFS = async () => {
+    
     if (process.env.NFT_STORAGE_KEY == undefined) {
       console.log('NFT_STORAGE_KEY is undefined')
       return
@@ -50,8 +54,8 @@ export default function Pinging({
     if (images.length > 1) {
       for (let i = startingIndex; i < endingIndex; i++) {
         const image = images[i]
-        if (image.file == undefined) {
-          console.log('image.file is undefined')
+        if (image['data_url'] == undefined) {
+          console.log('image.dataURL is undefined')
           return
         }
         const parsedName = renderMetadataString(metadata.name, i + 1)
@@ -59,8 +63,9 @@ export default function Pinging({
           metadata.description,
           i + 1
         )
+        console.log("minting...")
         const metadataFile = await nftstorage.store({
-          image: image.file,
+          image: dataURItoBlob(image['data_url']),
           name: parsedName,
           description: parsedDescription,
         })
@@ -86,8 +91,8 @@ export default function Pinging({
       }
     } else {
       const image = images[0]
-      if (image.file == undefined) {
-        console.log('image is undefined')
+      if (image['data_url'] == undefined) {
+        console.log('image data is undefined')
         return
       }
 
@@ -98,7 +103,7 @@ export default function Pinging({
           i + 1
         )
         const metadataFile = await nftstorage.store({
-          image: image.file,
+          image: dataURItoBlob(image['data_url']),
           name: parsedName,
           description: parsedDescription,
         })
