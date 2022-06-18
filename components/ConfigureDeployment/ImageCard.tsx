@@ -19,7 +19,7 @@ export default function ImageCard({
     newString = newString.replace("`count`", metadata.count.toString())
     return newString
   }
-  console.log(image)
+
   return (
     <div className="rounded flex-shrink-0 bg-gray-100 shadow-md h-80 w-60 flex flex-col border-2 border-gray-200">
       {image['data_url'] == undefined ? (

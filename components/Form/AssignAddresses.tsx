@@ -21,6 +21,7 @@ export default function AssignAddresses({
     state: 'deploy' | 'configure' | 'ping' | 'assign' | 'mint'
   ) => void
 }) {
+
   const csvUploadHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files == null) {
       return

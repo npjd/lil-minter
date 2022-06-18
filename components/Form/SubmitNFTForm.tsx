@@ -45,10 +45,15 @@ export default function SubmitNFTForm() {
     }
     if (storedNfts != null && storedMetadata != null) {
       if (
-        JSON.parse(storedNfts).length == JSON.parse(storedMetadata).count &&
+        JSON.parse(storedNfts).length >= JSON.parse(storedMetadata).count &&
         JSON.parse(storedNfts).length > 0
       ) {
         setState('assign')
+      } else if (
+        JSON.parse(storedNfts).length < JSON.parse(storedMetadata).count &&
+        JSON.parse(storedNfts).length > 0
+      ) {
+        setState('ping')
       }
     }
   }, [])
