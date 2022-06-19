@@ -3,6 +3,7 @@ import NFT from '../../types/NFT'
 import ImageCard from '../ConfigureDeployment/ImageCard'
 import Papa from 'papaparse'
 import { validAddress } from '../../util/validAddress'
+import { useAlert } from 'react-alert'
 
 export default function AssignAddresses({
   nfts,
@@ -21,7 +22,7 @@ export default function AssignAddresses({
     state: 'deploy' | 'configure' | 'ping' | 'assign' | 'mint'
   ) => void
 }) {
-
+  const alert = useAlert()
   const csvUploadHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files == null) {
       return
@@ -31,6 +32,7 @@ export default function AssignAddresses({
       skipEmptyLines: true,
       complete: function (results) {
         const newNfts: NFT[] = []
+        alert.info("File uploaded")
         // @ts-ignore
         const addresses = results.data.map((row) => row[0])
 
@@ -45,6 +47,7 @@ export default function AssignAddresses({
         })
 
         setNfts(newNfts)
+        localStorage.setItem('nfts', JSON.stringify(newNfts))
       },
     })
   }
@@ -52,21 +55,24 @@ export default function AssignAddresses({
   return (
     // create a grid
     <div className="flex flex-col">
-      <h2>Assign Addresses</h2>
-      <input
-        type="file"
-        name="file"
-        accept=".csv"
-        onChange={csvUploadHandler}
-        className="btn-primary"
-      />
-      <div className="flex flex-row overflow-x-auto space-x-4">
+      <h2 className="text-xl my-2">Assign Addresses</h2>
+      <div className="flex flex-col items-start space-y-2">
+        <label>Upload a CSV file of addresses</label>
+        <input
+          type="file"
+          name="file"
+          accept=".csv"
+          onChange={csvUploadHandler}
+          className="btn-primary"
+        />
+      </div>
+      <div className="flex flex-row overflow-x-auto space-x-4 px-2">
         {nfts.map((nft, index) => {
           return (
-            <div key={index}>
+            <div key={index} className="flex flex-col my-4">
               <ImageCard image={nft.image} index={index} metadata={metadata} />
               <input
-                className="text-input"
+                className="text-input rounded-none"
                 type="text"
                 placeholder="Enter recipient address"
                 value={nft.address}
@@ -76,6 +82,19 @@ export default function AssignAddresses({
                   setNfts(newNfts)
                 }}
               />
+              {!(index == 0 && nfts.length==1) && (
+                <button
+                  className="bg-red-500 hover:bg-red-600 p-2 rounded text-white"
+                  onClick={() => {
+                    let newNfts = [...nfts]
+                    newNfts.splice(index, 1)
+                    setNfts(newNfts)
+                    localStorage.setItem('nfts', JSON.stringify(newNfts))
+                  }}
+                >
+                  Delete NFT
+                </button>
+              )}
             </div>
           )
         })}

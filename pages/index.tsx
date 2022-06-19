@@ -26,9 +26,10 @@ const Home: NextPage = () => {
         <div className="mt-6 w-5/6 ">
           <SubmitNFTForm />
         </div>
+        <Footer />
       </main>
 
-      <Footer />
+      
     </div>
   )
 }
