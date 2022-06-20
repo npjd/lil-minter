@@ -20,16 +20,14 @@ const Home: NextPage = () => {
         </div>
       </nav>
 
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
+      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center mb-10">
         <Hero />
 
         <div className="mt-6 w-5/6 ">
           <SubmitNFTForm />
         </div>
-        <Footer />
       </main>
 
-      
     </div>
   )
 }

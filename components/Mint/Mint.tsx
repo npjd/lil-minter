@@ -13,7 +13,7 @@ export default function Mint({
 }) {
   const [minting, setMinting] = useState<boolean>(false)
   const alert = useAlert()
-  const [status, setStatus] = useState<'success' | 'error'>('success')
+  const [status, setStatus] = useState<'success' | 'error'|''>('')
   const mintNFTs = async () => {
     setMinting(true)
     alert.info('Minting NFTs...')
@@ -62,9 +62,7 @@ export default function Mint({
       }
     }
   }
-  useEffect(() => {
-    mintNFTs()
-  }, [])
+
 
   return <div>{render()}</div>
 }
