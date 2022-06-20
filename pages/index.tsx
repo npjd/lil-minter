@@ -8,26 +8,26 @@ import Hero from '../components/Hero'
 
 const Home: NextPage = () => {
   return (
-    <div className="flex flex-col py-2 h-screen">
+    <div className="flex flex-col py-2 h-full">
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <nav>
-        <div className="flex flex-row-reverse  w-full h-16 -ml-10 mt-8">
+        <div className="flex flex-row-reverse w-full h-16 -ml-10 mt-8">
           <ConnectWallet />
         </div>
       </nav>
 
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
+      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center mt-24">
         <Hero />
 
-        <div className="mt-6 w-5/6 ">
+        <div className=" relative mt-12 w-5/6">
           <SubmitNFTForm />
         </div>
-        <Footer />
       </main>
+      <Footer />
 
       
     </div>
