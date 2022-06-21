@@ -6,6 +6,7 @@ import Pinging from '../Pinging/Pinging'
 import AssignAddresses from './AssignAddresses'
 import ConfigureDeployment from './ConfigureDeployment'
 import DeployContract from './DeployContract'
+import ResetNFT from './ResetNFT'
 
 export default function SubmitNFTForm() {
   const [state, setState] = useState<
@@ -106,5 +107,18 @@ export default function SubmitNFTForm() {
     }
   }
 
-  return <div>{renderForm()}</div>
+  return (
+    <div>
+      {renderForm()}
+      {state != 'deploy' && (
+        <ResetNFT
+          setState={setState}
+          setContractAddress={setContractAddress}
+          setImages={setImages}
+          setMetadata={setMetadata}
+          setNfts={setNfts}
+        />
+      )}
+    </div>
+  )
 }

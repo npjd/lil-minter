@@ -21,7 +21,7 @@ export default function ResetNFT({
 }) {
   return (
     <button
-      className="btn-primary bg-red-500 hover:bg-red-600"
+      className="btn-primary bg-red-500 hover:bg-red-600 float-right"
       onClick={() => {
         setState('deploy')
         setContractAddress(null)
