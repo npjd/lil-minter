@@ -1,8 +1,8 @@
 import { ethers } from 'ethers'
-import React, { useEffect, useState } from 'react'
-import NFT from '../../types/NFT'
-import { abi } from '../../artifacts/contracts/MinterNFT.sol/MinterNFT.json'
+import { useEffect, useState } from 'react'
 import { useAlert } from 'react-alert'
+import { abi } from '../../artifacts/contracts/MinterNFT.sol/MinterNFT.json'
+import NFT from '../../types/NFT'
 
 export default function Mint({
   nfts,
@@ -23,16 +23,32 @@ export default function Mint({
     const toAddresses = nfts.map((nft) => nft.address)
     const uris = nfts.map((nft) => nft.uri)
     const contract = new ethers.Contract(address, abi, signer)
+    // create batches of 100 to mint
+    for (let i = 0; i < uris.length; i++) {
+      const uriChunk = uris.slice(i, i + 100)
+      const toAddressesChunk = toAddresses.slice(i, i + 100)
+      try {
+        const val = await contract.batchMint(toAddresses, uris)
+        console.log(val)
+        alert.success(`Batch ${i + 1}/${uris.length} Minted!`)
+      } catch (e) {
+        alert.error(`Batch ${i + 1}/${uris.length} Failed...`)
+        alert.error('Are you possibly using the wrong contract address?')
+        break
+      }
+    }
+    setMinting(false)
+
     try {
       const val = await contract.batchMint(toAddresses, uris)
       console.log(val)
       setMinting(false)
-      alert.success("Minted!")
+      alert.success('Minted!')
       setStatus('success')
     } catch (e) {
       console.log(e)
       setMinting(false)
-      alert.error("Error minting NFTs")
+      alert.error('Error minting NFTs')
       setStatus('error')
     }
   }
@@ -53,9 +69,17 @@ export default function Mint({
                 </button>
               </>
             ) : (
-              <button onClick={() => mintNFTs()} className="btn-primary">
-                Mint
-              </button>
+              <>
+                <button onClick={() => mintNFTs()} className="btn-primary">
+                  Mint
+                </button>
+                {nfts.length > 100 && (
+                  <p>
+                    You may be prompted to confirm multiple transactions because
+                    of the high volume of NFTs you are minting...
+                  </p>
+                )}
+              </>
             )}
           </div>
         )
