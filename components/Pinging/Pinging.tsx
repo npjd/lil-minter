@@ -36,7 +36,7 @@ export default function Pinging({
   }
 
   useEffect(() => {
-    if (progress === 100) {
+    if (progress >= 100) {
       setState('pinned')
     }
   }, [progress])
@@ -55,10 +55,14 @@ export default function Pinging({
 
     let id = startingIndex
 
+    console.log("starting index",startingIndex)
+    console.log("ending index", endingIndex)
+
     while (id < endingIndex) {
       const requests = []
       // 5 is batch size
       for (let i = 0; i < 5; i++) {
+        
         if (id >= endingIndex) break
         let image
         if (images.length == 1) {
@@ -80,9 +84,10 @@ export default function Pinging({
             })
 
             console.log('NFT #' + id + ' stored')
-            console.log('Metadata URL: ' + metadataFile.url)
             const uri = metadataFile.url.replace('ipfs://', '')
-            setProgress(Math.round((id + 1 / metadata.count) * 100))
+            console.log("this is id/endingindex",id/endingIndex)
+            setProgress(Math.round(id/endingIndex)*100)
+
             const newNft: NFT = {
               uri,
               name: parsedName,
@@ -93,7 +98,7 @@ export default function Pinging({
             return newNft
           })()
         )
-        id++
+        id+=1
       }
       const repsonses = await Promise.all(requests)
 
@@ -101,6 +106,7 @@ export default function Pinging({
         const newNft = repsonses[i]
         setNfts([...nfts, newNft])
         const exisingNfts = localStorage.getItem('nfts')
+        
         localStorage.setItem(
           'nfts',
           exisingNfts == null
@@ -110,107 +116,12 @@ export default function Pinging({
       }
     }
 
-    // if (images.length > 1) {
-    //   for (let i = startingIndex; i < endingIndex; i++) {
-    //     const id = i + 1
-    //     requests.push(
-    //       (async () => {
-    //         const image = images[i]
-    //         if (image['data_url'] == undefined) {
-    //           console.log('image.dataURL is undefined')
-    //           return
-    //         }
-    //         const parsedName = renderMetadataString(metadata.name, id)
-    //         const parsedDescription = renderMetadataString(
-    //           metadata.description,
-    //           id
-    //         )
-    //         console.log(id, parsedName)
-    //         const metadataFile = await nftstorage.store({
-    //           image: dataURItoBlob(image['data_url']),
-    //           name: parsedName,
-    //           description: parsedDescription,
-    //         })
-    //         console.log('NFT #' + id + ' stored')
-    //         console.log('Metadata URL: ' + metadataFile.url)
-    //         const uri = metadataFile.url.replace('ipfs://', '')
-    //         setProgress(Math.round((id / metadata.count) * 100))
-    //         const newNft: NFT = {
-    //           uri,
-    //           name: parsedName,
-    //           description: parsedDescription,
-    //           address: '',
-    //           image: image,
-    //         }
-    //         setNfts([...nfts, newNft])
-    //         const exisingNfts = localStorage.getItem('nfts')
-
-    //         localStorage.setItem(
-    //           'nfts',
-    //           exisingNfts == null
-    //             ? JSON.stringify([newNft])
-    //             : JSON.stringify([...JSON.parse(exisingNfts), newNft])
-    //         )
-    //       })()
-    //     )
-    //     const responses = await Promise.all(requests)
-    //   }
-    // } else {
-    //   const image = images[0]
-    //   if (image['data_url'] == undefined) {
-    //     console.log('image data is undefined')
-    //     return
-    //   }
-
-    //   for (let i = startingIndex; i < endingIndex; i++) {
-    //     const id = i + 1
-    //     requests.push(
-    //       (async () => {
-    //         const parsedName = renderMetadataString(metadata.name, id)
-    //         const parsedDescription = renderMetadataString(
-    //           metadata.description,
-    //           id
-    //         )
-    //         console.log(id, parsedName)
-    //         const metadataFile = await nftstorage.store({
-    //           image: dataURItoBlob(image['data_url']),
-    //           name: parsedName,
-    //           description: parsedDescription,
-    //         })
-    //         console.log('NFT #' + id + ' stored')
-    //         console.log('Metadata URL: ' + metadataFile.url)
-    //         const uri = metadataFile.url.replace('ipfs://', '')
-    //         setProgress(Math.round((id / metadata.count) * 100))
-    //         const newNft: NFT = {
-    //           uri,
-    //           name: parsedName,
-    //           description: parsedDescription,
-    //           address: '',
-    //           image: image,
-    //         }
-    //         setNfts([...nfts, newNft])
-    //         const exisingNfts = localStorage.getItem('nfts')
-
-    //         localStorage.setItem(
-    //           'nfts',
-    //           exisingNfts == null
-    //             ? JSON.stringify([newNft])
-    //             : JSON.stringify([...JSON.parse(exisingNfts), newNft])
-    //         )
-    //       })()
-    //     )
-    //   }
-
-    //   const responses = await Promise.all(requests)
-    // }
 
     console.log('NFTs stored', nfts)
   }
 
   useEffect(() => {
-    pinIPFS().then(() => {
-      console.log(nfts)
-    })
+    pinIPFS()
   }, [])
 
   return (
