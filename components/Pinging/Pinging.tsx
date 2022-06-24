@@ -28,18 +28,14 @@ export default function Pinging({
   const [progress, setProgress] = useState(
     Math.round((nfts.length / metadata.count) * 100)
   )
-  const [state, setState] = useState<'pinning' | 'pinned'>('pinning')
+
   const renderMetadataString = (string: string, index: number): string => {
     let newString = string.replace('`index`', index.toString())
     newString = newString.replace('`count`', metadata.count.toString())
     return newString
   }
 
-  useEffect(() => {
-    if (progress >= 100) {
-      setState('pinned')
-    }
-  }, [progress])
+  
 
   const pinIPFS = async () => {
     if (process.env.NFT_STORAGE_KEY == undefined) {
@@ -49,20 +45,20 @@ export default function Pinging({
     const nftstorage = new NFTStorage({ token: process.env.NFT_STORAGE_KEY })
     const startingIndex = nfts.length
     const endingIndex = metadata.count
+    let count = startingIndex
 
     // Temporary workaround
     await nftstorage.storeBlob(new Blob(['WAKE UP']))
 
     let id = startingIndex
 
-    console.log("starting index",startingIndex)
-    console.log("ending index", endingIndex)
+    console.log('starting index', startingIndex)
+    console.log('ending index', endingIndex)
 
     while (id < endingIndex) {
       const requests = []
       // 5 is batch size
       for (let i = 0; i < 5; i++) {
-        
         if (id >= endingIndex) break
         let image
         if (images.length == 1) {
@@ -85,8 +81,6 @@ export default function Pinging({
 
             console.log('NFT #' + id + ' stored')
             const uri = metadataFile.url.replace('ipfs://', '')
-            console.log("this is id/endingindex",id/endingIndex)
-            setProgress(Math.round(id/endingIndex)*100)
 
             const newNft: NFT = {
               uri,
@@ -98,15 +92,17 @@ export default function Pinging({
             return newNft
           })()
         )
-        id+=1
+        id += 1
       }
       const repsonses = await Promise.all(requests)
 
       for (let i = 0; i < requests.length; i++) {
         const newNft = repsonses[i]
+        count += 1
+        setProgress(Math.round((count / endingIndex) * 100))
         setNfts([...nfts, newNft])
         const exisingNfts = localStorage.getItem('nfts')
-        
+
         localStorage.setItem(
           'nfts',
           exisingNfts == null
@@ -115,7 +111,6 @@ export default function Pinging({
         )
       }
     }
-
 
     console.log('NFTs stored', nfts)
   }
@@ -129,7 +124,7 @@ export default function Pinging({
       <div style={{ width: 200, height: 200 }}>
         <CircularProgressbar value={progress} text={`${progress}%`} />
       </div>
-      {state == 'pinned' && (
+      {progress >= 100 && (
         <div>
           <p>
             <b>Pinning complete!</b>
