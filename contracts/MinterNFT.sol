@@ -53,13 +53,14 @@ contract MinterNFT is ERC721, ERC721URIStorage, AccessControlEnumerable {
     }
 
     function tokenURI(uint256 tokenId)
-        public
-        view
-        override(ERC721, ERC721URIStorage)
-        returns (string memory)
-    {
-        return super.tokenURI(tokenId);
-    }
+    public
+    view
+    virtual
+    override(ERC721, ERC721URIStorage)
+    returns (string memory)
+{
+    return string(abi.encodePacked("ipfs://", super.tokenURI(tokenId), "/metadata.json"));
+}
 
     function supportsInterface(bytes4 interfaceId)
         public
