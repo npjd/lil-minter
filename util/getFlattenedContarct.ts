@@ -1,3 +1,5 @@
+export const getFlattenedContract = (): string => {
+  return `
 // SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/Strings.sol)
 
@@ -10,7 +12,7 @@ library Strings {
     bytes16 private constant _HEX_SYMBOLS = "0123456789abcdef";
 
     /**
-     * @dev Converts a `uint256` to its ASCII `string` decimal representation.
+     * @dev Converts a 'uint256' to its ASCII 'string' decimal representation.
      */
     function toString(uint256 value) internal pure returns (string memory) {
         // Inspired by OraclizeAPI's implementation - MIT licence
@@ -35,7 +37,7 @@ library Strings {
     }
 
     /**
-     * @dev Converts a `uint256` to its ASCII `string` hexadecimal representation.
+     * @dev Converts a 'uint256' to its ASCII 'string' hexadecimal representation.
      */
     function toHexString(uint256 value) internal pure returns (string memory) {
         if (value == 0) {
@@ -51,7 +53,7 @@ library Strings {
     }
 
     /**
-     * @dev Converts a `uint256` to its ASCII `string` hexadecimal representation with fixed length.
+     * @dev Converts a 'uint256' to its ASCII 'string' hexadecimal representation with fixed length.
      */
     function toHexString(uint256 value, uint256 length) internal pure returns (string memory) {
         bytes memory buffer = new bytes(2 * length + 2);
@@ -99,9 +101,9 @@ abstract contract Context {
  */
 interface IAccessControl {
     /**
-     * @dev Emitted when `newAdminRole` is set as ``role``'s admin role, replacing `previousAdminRole`
+     * @dev Emitted when 'newAdminRole' is set as ''role'''s admin role, replacing 'previousAdminRole'
      *
-     * `DEFAULT_ADMIN_ROLE` is the starting admin for all roles, despite
+     * 'DEFAULT_ADMIN_ROLE' is the starting admin for all roles, despite
      * {RoleAdminChanged} not being emitted signaling this.
      *
      * _Available since v3.1._
@@ -109,29 +111,29 @@ interface IAccessControl {
     event RoleAdminChanged(bytes32 indexed role, bytes32 indexed previousAdminRole, bytes32 indexed newAdminRole);
 
     /**
-     * @dev Emitted when `account` is granted `role`.
+     * @dev Emitted when 'account' is granted 'role'.
      *
-     * `sender` is the account that originated the contract call, an admin role
+     * 'sender' is the account that originated the contract call, an admin role
      * bearer except when using {AccessControl-_setupRole}.
      */
     event RoleGranted(bytes32 indexed role, address indexed account, address indexed sender);
 
     /**
-     * @dev Emitted when `account` is revoked `role`.
+     * @dev Emitted when 'account' is revoked 'role'.
      *
-     * `sender` is the account that originated the contract call:
-     *   - if using `revokeRole`, it is the admin role bearer
-     *   - if using `renounceRole`, it is the role bearer (i.e. `account`)
+     * 'sender' is the account that originated the contract call:
+     *   - if using 'revokeRole', it is the admin role bearer
+     *   - if using 'renounceRole', it is the role bearer (i.e. 'account')
      */
     event RoleRevoked(bytes32 indexed role, address indexed account, address indexed sender);
 
     /**
-     * @dev Returns `true` if `account` has been granted `role`.
+     * @dev Returns 'true' if 'account' has been granted 'role'.
      */
     function hasRole(bytes32 role, address account) external view returns (bool);
 
     /**
-     * @dev Returns the admin role that controls `role`. See {grantRole} and
+     * @dev Returns the admin role that controls 'role'. See {grantRole} and
      * {revokeRole}.
      *
      * To change a role's admin, use {AccessControl-_setRoleAdmin}.
@@ -139,41 +141,41 @@ interface IAccessControl {
     function getRoleAdmin(bytes32 role) external view returns (bytes32);
 
     /**
-     * @dev Grants `role` to `account`.
+     * @dev Grants 'role' to 'account'.
      *
-     * If `account` had not been already granted `role`, emits a {RoleGranted}
+     * If 'account' had not been already granted 'role', emits a {RoleGranted}
      * event.
      *
      * Requirements:
      *
-     * - the caller must have ``role``'s admin role.
+     * - the caller must have ''role'''s admin role.
      */
     function grantRole(bytes32 role, address account) external;
 
     /**
-     * @dev Revokes `role` from `account`.
+     * @dev Revokes 'role' from 'account'.
      *
-     * If `account` had been granted `role`, emits a {RoleRevoked} event.
+     * If 'account' had been granted 'role', emits a {RoleRevoked} event.
      *
      * Requirements:
      *
-     * - the caller must have ``role``'s admin role.
+     * - the caller must have ''role'''s admin role.
      */
     function revokeRole(bytes32 role, address account) external;
 
     /**
-     * @dev Revokes `role` from the calling account.
+     * @dev Revokes 'role' from the calling account.
      *
      * Roles are often managed via {grantRole} and {revokeRole}: this function's
      * purpose is to provide a mechanism for accounts to lose their privileges
      * if they are compromised (such as when a trusted device is misplaced).
      *
-     * If the calling account had been granted `role`, emits a {RoleRevoked}
+     * If the calling account had been granted 'role', emits a {RoleRevoked}
      * event.
      *
      * Requirements:
      *
-     * - the caller must be `account`.
+     * - the caller must be 'account'.
      */
     function renounceRole(bytes32 role, address account) external;
 }
@@ -194,7 +196,7 @@ interface IAccessControl {
 interface IERC165 {
     /**
      * @dev Returns true if this contract implements the interface defined by
-     * `interfaceId`. See the corresponding
+     * 'interfaceId'. See the corresponding
      * https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[EIP section]
      * to learn more about how these ids are created.
      *
@@ -222,44 +224,44 @@ interface IERC165 {
  */
 interface IERC721 is IERC165 {
     /**
-     * @dev Emitted when `tokenId` token is transferred from `from` to `to`.
+     * @dev Emitted when 'tokenId' token is transferred from 'from' to 'to'.
      */
     event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
 
     /**
-     * @dev Emitted when `owner` enables `approved` to manage the `tokenId` token.
+     * @dev Emitted when 'owner' enables 'approved' to manage the 'tokenId' token.
      */
     event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
 
     /**
-     * @dev Emitted when `owner` enables or disables (`approved`) `operator` to manage all of its assets.
+     * @dev Emitted when 'owner' enables or disables ('approved') 'operator' to manage all of its assets.
      */
     event ApprovalForAll(address indexed owner, address indexed operator, bool approved);
 
     /**
-     * @dev Returns the number of tokens in ``owner``'s account.
+     * @dev Returns the number of tokens in ''owner'''s account.
      */
     function balanceOf(address owner) external view returns (uint256 balance);
 
     /**
-     * @dev Returns the owner of the `tokenId` token.
+     * @dev Returns the owner of the 'tokenId' token.
      *
      * Requirements:
      *
-     * - `tokenId` must exist.
+     * - 'tokenId' must exist.
      */
     function ownerOf(uint256 tokenId) external view returns (address owner);
 
     /**
-     * @dev Safely transfers `tokenId` token from `from` to `to`.
+     * @dev Safely transfers 'tokenId' token from 'from' to 'to'.
      *
      * Requirements:
      *
-     * - `from` cannot be the zero address.
-     * - `to` cannot be the zero address.
-     * - `tokenId` token must exist and be owned by `from`.
-     * - If the caller is not `from`, it must be approved to move this token by either {approve} or {setApprovalForAll}.
-     * - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.
+     * - 'from' cannot be the zero address.
+     * - 'to' cannot be the zero address.
+     * - 'tokenId' token must exist and be owned by 'from'.
+     * - If the caller is not 'from', it must be approved to move this token by either {approve} or {setApprovalForAll}.
+     * - If 'to' refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.
      *
      * Emits a {Transfer} event.
      */
@@ -271,16 +273,16 @@ interface IERC721 is IERC165 {
     ) external;
 
     /**
-     * @dev Safely transfers `tokenId` token from `from` to `to`, checking first that contract recipients
+     * @dev Safely transfers 'tokenId' token from 'from' to 'to', checking first that contract recipients
      * are aware of the ERC721 protocol to prevent tokens from being forever locked.
      *
      * Requirements:
      *
-     * - `from` cannot be the zero address.
-     * - `to` cannot be the zero address.
-     * - `tokenId` token must exist and be owned by `from`.
-     * - If the caller is not `from`, it must be have been allowed to move this token by either {approve} or {setApprovalForAll}.
-     * - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.
+     * - 'from' cannot be the zero address.
+     * - 'to' cannot be the zero address.
+     * - 'tokenId' token must exist and be owned by 'from'.
+     * - If the caller is not 'from', it must be have been allowed to move this token by either {approve} or {setApprovalForAll}.
+     * - If 'to' refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.
      *
      * Emits a {Transfer} event.
      */
@@ -291,16 +293,16 @@ interface IERC721 is IERC165 {
     ) external;
 
     /**
-     * @dev Transfers `tokenId` token from `from` to `to`.
+     * @dev Transfers 'tokenId' token from 'from' to 'to'.
      *
      * WARNING: Usage of this method is discouraged, use {safeTransferFrom} whenever possible.
      *
      * Requirements:
      *
-     * - `from` cannot be the zero address.
-     * - `to` cannot be the zero address.
-     * - `tokenId` token must be owned by `from`.
-     * - If the caller is not `from`, it must be approved to move this token by either {approve} or {setApprovalForAll}.
+     * - 'from' cannot be the zero address.
+     * - 'to' cannot be the zero address.
+     * - 'tokenId' token must be owned by 'from'.
+     * - If the caller is not 'from', it must be approved to move this token by either {approve} or {setApprovalForAll}.
      *
      * Emits a {Transfer} event.
      */
@@ -311,7 +313,7 @@ interface IERC721 is IERC165 {
     ) external;
 
     /**
-     * @dev Gives permission to `to` to transfer `tokenId` token to another account.
+     * @dev Gives permission to 'to' to transfer 'tokenId' token to another account.
      * The approval is cleared when the token is transferred.
      *
      * Only a single account can be approved at a time, so approving the zero address clears previous approvals.
@@ -319,35 +321,35 @@ interface IERC721 is IERC165 {
      * Requirements:
      *
      * - The caller must own the token or be an approved operator.
-     * - `tokenId` must exist.
+     * - 'tokenId' must exist.
      *
      * Emits an {Approval} event.
      */
     function approve(address to, uint256 tokenId) external;
 
     /**
-     * @dev Approve or remove `operator` as an operator for the caller.
+     * @dev Approve or remove 'operator' as an operator for the caller.
      * Operators can call {transferFrom} or {safeTransferFrom} for any token owned by the caller.
      *
      * Requirements:
      *
-     * - The `operator` cannot be the caller.
+     * - The 'operator' cannot be the caller.
      *
      * Emits an {ApprovalForAll} event.
      */
     function setApprovalForAll(address operator, bool _approved) external;
 
     /**
-     * @dev Returns the account approved for `tokenId` token.
+     * @dev Returns the account approved for 'tokenId' token.
      *
      * Requirements:
      *
-     * - `tokenId` must exist.
+     * - 'tokenId' must exist.
      */
     function getApproved(uint256 tokenId) external view returns (address operator);
 
     /**
-     * @dev Returns if the `operator` is allowed to manage all of the assets of `owner`.
+     * @dev Returns if the 'operator' is allowed to manage all of the assets of 'owner'.
      *
      * See {setApprovalForAll}
      */
@@ -366,13 +368,13 @@ interface IERC721 is IERC165 {
  */
 interface IERC721Receiver {
     /**
-     * @dev Whenever an {IERC721} `tokenId` token is transferred to this contract via {IERC721-safeTransferFrom}
-     * by `operator` from `from`, this function is called.
+     * @dev Whenever an {IERC721} 'tokenId' token is transferred to this contract via {IERC721-safeTransferFrom}
+     * by 'operator' from 'from', this function is called.
      *
      * It must return its Solidity selector to confirm the token transfer.
      * If any other value is returned or the interface is not implemented by the recipient, the transfer will be reverted.
      *
-     * The selector can be obtained in Solidity with `IERC721Receiver.onERC721Received.selector`.
+     * The selector can be obtained in Solidity with 'IERC721Receiver.onERC721Received.selector'.
      */
     function onERC721Received(
         address operator,
@@ -405,7 +407,7 @@ interface IERC721Metadata is IERC721 {
     function symbol() external view returns (string memory);
 
     /**
-     * @dev Returns the Uniform Resource Identifier (URI) for `tokenId` token.
+     * @dev Returns the Uniform Resource Identifier (URI) for 'tokenId' token.
      */
     function tokenURI(uint256 tokenId) external view returns (string memory);
 }
@@ -420,14 +422,14 @@ interface IERC721Metadata is IERC721 {
  */
 library Address {
     /**
-     * @dev Returns true if `account` is a contract.
+     * @dev Returns true if 'account' is a contract.
      *
      * [IMPORTANT]
      * ====
      * It is unsafe to assume that an address for which this function returns
      * false is an externally-owned account (EOA) and not a contract.
      *
-     * Among others, `isContract` will return false for the following
+     * Among others, 'isContract' will return false for the following
      * types of addresses:
      *
      *  - an externally-owned account
@@ -438,7 +440,7 @@ library Address {
      *
      * [IMPORTANT]
      * ====
-     * You shouldn't rely on `isContract` to protect against flash loan attacks!
+     * You shouldn't rely on 'isContract' to protect against flash loan attacks!
      *
      * Preventing calls from contracts is highly discouraged. It breaks composability, breaks support for smart wallets
      * like Gnosis Safe, and does not provide security since it can be circumvented by calling from a contract
@@ -454,17 +456,17 @@ library Address {
     }
 
     /**
-     * @dev Replacement for Solidity's `transfer`: sends `amount` wei to
-     * `recipient`, forwarding all available gas and reverting on errors.
+     * @dev Replacement for Solidity's 'transfer': sends 'amount' wei to
+     * 'recipient', forwarding all available gas and reverting on errors.
      *
      * https://eips.ethereum.org/EIPS/eip-1884[EIP1884] increases the gas cost
      * of certain opcodes, possibly making contracts go over the 2300 gas limit
-     * imposed by `transfer`, making them unable to receive funds via
-     * `transfer`. {sendValue} removes this limitation.
+     * imposed by 'transfer', making them unable to receive funds via
+     * 'transfer'. {sendValue} removes this limitation.
      *
      * https://diligence.consensys.net/posts/2019/09/stop-using-soliditys-transfer-now/[Learn more].
      *
-     * IMPORTANT: because control is transferred to `recipient`, care must be
+     * IMPORTANT: because control is transferred to 'recipient', care must be
      * taken to not create reentrancy vulnerabilities. Consider using
      * {ReentrancyGuard} or the
      * https://solidity.readthedocs.io/en/v0.5.11/security-considerations.html#use-the-checks-effects-interactions-pattern[checks-effects-interactions pattern].
@@ -477,20 +479,20 @@ library Address {
     }
 
     /**
-     * @dev Performs a Solidity function call using a low level `call`. A
-     * plain `call` is an unsafe replacement for a function call: use this
+     * @dev Performs a Solidity function call using a low level 'call'. A
+     * plain 'call' is an unsafe replacement for a function call: use this
      * function instead.
      *
-     * If `target` reverts with a revert reason, it is bubbled up by this
+     * If 'target' reverts with a revert reason, it is bubbled up by this
      * function (like regular Solidity function calls).
      *
      * Returns the raw returned data. To convert to the expected return value,
-     * use https://solidity.readthedocs.io/en/latest/units-and-global-variables.html?highlight=abi.decode#abi-encoding-and-decoding-functions[`abi.decode`].
+     * use https://solidity.readthedocs.io/en/latest/units-and-global-variables.html?highlight=abi.decode#abi-encoding-and-decoding-functions['abi.decode'].
      *
      * Requirements:
      *
-     * - `target` must be a contract.
-     * - calling `target` with `data` must not revert.
+     * - 'target' must be a contract.
+     * - calling 'target' with 'data' must not revert.
      *
      * _Available since v3.1._
      */
@@ -499,8 +501,8 @@ library Address {
     }
 
     /**
-     * @dev Same as {xref-Address-functionCall-address-bytes-}[`functionCall`], but with
-     * `errorMessage` as a fallback revert reason when `target` reverts.
+     * @dev Same as {xref-Address-functionCall-address-bytes-}['functionCall'], but with
+     * 'errorMessage' as a fallback revert reason when 'target' reverts.
      *
      * _Available since v3.1._
      */
@@ -513,13 +515,13 @@ library Address {
     }
 
     /**
-     * @dev Same as {xref-Address-functionCall-address-bytes-}[`functionCall`],
-     * but also transferring `value` wei to `target`.
+     * @dev Same as {xref-Address-functionCall-address-bytes-}['functionCall'],
+     * but also transferring 'value' wei to 'target'.
      *
      * Requirements:
      *
-     * - the calling contract must have an ETH balance of at least `value`.
-     * - the called Solidity function must be `payable`.
+     * - the calling contract must have an ETH balance of at least 'value'.
+     * - the called Solidity function must be 'payable'.
      *
      * _Available since v3.1._
      */
@@ -532,8 +534,8 @@ library Address {
     }
 
     /**
-     * @dev Same as {xref-Address-functionCallWithValue-address-bytes-uint256-}[`functionCallWithValue`], but
-     * with `errorMessage` as a fallback revert reason when `target` reverts.
+     * @dev Same as {xref-Address-functionCallWithValue-address-bytes-uint256-}['functionCallWithValue'], but
+     * with 'errorMessage' as a fallback revert reason when 'target' reverts.
      *
      * _Available since v3.1._
      */
@@ -551,7 +553,7 @@ library Address {
     }
 
     /**
-     * @dev Same as {xref-Address-functionCall-address-bytes-}[`functionCall`],
+     * @dev Same as {xref-Address-functionCall-address-bytes-}['functionCall'],
      * but performing a static call.
      *
      * _Available since v3.3._
@@ -561,7 +563,7 @@ library Address {
     }
 
     /**
-     * @dev Same as {xref-Address-functionCall-address-bytes-string-}[`functionCall`],
+     * @dev Same as {xref-Address-functionCall-address-bytes-string-}['functionCall'],
      * but performing a static call.
      *
      * _Available since v3.3._
@@ -578,7 +580,7 @@ library Address {
     }
 
     /**
-     * @dev Same as {xref-Address-functionCall-address-bytes-}[`functionCall`],
+     * @dev Same as {xref-Address-functionCall-address-bytes-}['functionCall'],
      * but performing a delegate call.
      *
      * _Available since v3.4._
@@ -588,7 +590,7 @@ library Address {
     }
 
     /**
-     * @dev Same as {xref-Address-functionCall-address-bytes-string-}[`functionCall`],
+     * @dev Same as {xref-Address-functionCall-address-bytes-string-}['functionCall'],
      * but performing a delegate call.
      *
      * _Available since v3.4._
@@ -648,11 +650,11 @@ library Address {
  * Contracts that want to implement ERC165 should inherit from this contract and override {supportsInterface} to check
  * for the additional interface id that will be supported. For example:
  *
- * ```solidity
+ * '''solidity
  * function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
  *     return interfaceId == type(MyInterface).interfaceId || super.supportsInterface(interfaceId);
  * }
- * ```
+ * '''
  *
  * Alternatively, {ERC165Storage} provides an easier to use but more expensive implementation.
  */
@@ -694,7 +696,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     mapping(address => mapping(address => bool)) private _operatorApprovals;
 
     /**
-     * @dev Initializes the contract by setting a `name` and a `symbol` to the token collection.
+     * @dev Initializes the contract by setting a 'name' and a 'symbol' to the token collection.
      */
     constructor(string memory name_, string memory symbol_) {
         _name = name_;
@@ -754,7 +756,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
 
     /**
      * @dev Base URI for computing {tokenURI}. If set, the resulting URI for each
-     * token will be the concatenation of the `baseURI` and the `tokenId`. Empty
+     * token will be the concatenation of the 'baseURI' and the 'tokenId'. Empty
      * by default, can be overridden in child contracts.
      */
     function _baseURI() internal view virtual returns (string memory) {
@@ -838,20 +840,20 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     }
 
     /**
-     * @dev Safely transfers `tokenId` token from `from` to `to`, checking first that contract recipients
+     * @dev Safely transfers 'tokenId' token from 'from' to 'to', checking first that contract recipients
      * are aware of the ERC721 protocol to prevent tokens from being forever locked.
      *
-     * `_data` is additional data, it has no specified format and it is sent in call to `to`.
+     * '_data' is additional data, it has no specified format and it is sent in call to 'to'.
      *
      * This internal function is equivalent to {safeTransferFrom}, and can be used to e.g.
      * implement alternative mechanisms to perform token transfer, such as signature-based.
      *
      * Requirements:
      *
-     * - `from` cannot be the zero address.
-     * - `to` cannot be the zero address.
-     * - `tokenId` token must exist and be owned by `from`.
-     * - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.
+     * - 'from' cannot be the zero address.
+     * - 'to' cannot be the zero address.
+     * - 'tokenId' token must exist and be owned by 'from'.
+     * - If 'to' refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.
      *
      * Emits a {Transfer} event.
      */
@@ -866,23 +868,23 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     }
 
     /**
-     * @dev Returns whether `tokenId` exists.
+     * @dev Returns whether 'tokenId' exists.
      *
      * Tokens can be managed by their owner or approved accounts via {approve} or {setApprovalForAll}.
      *
-     * Tokens start existing when they are minted (`_mint`),
-     * and stop existing when they are burned (`_burn`).
+     * Tokens start existing when they are minted ('_mint'),
+     * and stop existing when they are burned ('_burn').
      */
     function _exists(uint256 tokenId) internal view virtual returns (bool) {
         return _owners[tokenId] != address(0);
     }
 
     /**
-     * @dev Returns whether `spender` is allowed to manage `tokenId`.
+     * @dev Returns whether 'spender' is allowed to manage 'tokenId'.
      *
      * Requirements:
      *
-     * - `tokenId` must exist.
+     * - 'tokenId' must exist.
      */
     function _isApprovedOrOwner(address spender, uint256 tokenId) internal view virtual returns (bool) {
         require(_exists(tokenId), "ERC721: operator query for nonexistent token");
@@ -891,12 +893,12 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     }
 
     /**
-     * @dev Safely mints `tokenId` and transfers it to `to`.
+     * @dev Safely mints 'tokenId' and transfers it to 'to'.
      *
      * Requirements:
      *
-     * - `tokenId` must not exist.
-     * - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.
+     * - 'tokenId' must not exist.
+     * - If 'to' refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.
      *
      * Emits a {Transfer} event.
      */
@@ -905,7 +907,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     }
 
     /**
-     * @dev Same as {xref-ERC721-_safeMint-address-uint256-}[`_safeMint`], with an additional `data` parameter which is
+     * @dev Same as {xref-ERC721-_safeMint-address-uint256-}['_safeMint'], with an additional 'data' parameter which is
      * forwarded in {IERC721Receiver-onERC721Received} to contract recipients.
      */
     function _safeMint(
@@ -921,14 +923,14 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     }
 
     /**
-     * @dev Mints `tokenId` and transfers it to `to`.
+     * @dev Mints 'tokenId' and transfers it to 'to'.
      *
      * WARNING: Usage of this method is discouraged, use {_safeMint} whenever possible
      *
      * Requirements:
      *
-     * - `tokenId` must not exist.
-     * - `to` cannot be the zero address.
+     * - 'tokenId' must not exist.
+     * - 'to' cannot be the zero address.
      *
      * Emits a {Transfer} event.
      */
@@ -947,12 +949,12 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     }
 
     /**
-     * @dev Destroys `tokenId`.
+     * @dev Destroys 'tokenId'.
      * The approval is cleared when the token is burned.
      *
      * Requirements:
      *
-     * - `tokenId` must exist.
+     * - 'tokenId' must exist.
      *
      * Emits a {Transfer} event.
      */
@@ -973,13 +975,13 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     }
 
     /**
-     * @dev Transfers `tokenId` from `from` to `to`.
+     * @dev Transfers 'tokenId' from 'from' to 'to'.
      *  As opposed to {transferFrom}, this imposes no restrictions on msg.sender.
      *
      * Requirements:
      *
-     * - `to` cannot be the zero address.
-     * - `tokenId` token must be owned by `from`.
+     * - 'to' cannot be the zero address.
+     * - 'tokenId' token must be owned by 'from'.
      *
      * Emits a {Transfer} event.
      */
@@ -1006,7 +1008,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     }
 
     /**
-     * @dev Approve `to` to operate on `tokenId`
+     * @dev Approve 'to' to operate on 'tokenId'
      *
      * Emits a {Approval} event.
      */
@@ -1016,7 +1018,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     }
 
     /**
-     * @dev Approve `operator` to operate on all of `owner` tokens
+     * @dev Approve 'operator' to operate on all of 'owner' tokens
      *
      * Emits a {ApprovalForAll} event.
      */
@@ -1069,11 +1071,11 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      *
      * Calling conditions:
      *
-     * - When `from` and `to` are both non-zero, ``from``'s `tokenId` will be
-     * transferred to `to`.
-     * - When `from` is zero, `tokenId` will be minted for `to`.
-     * - When `to` is zero, ``from``'s `tokenId` will be burned.
-     * - `from` and `to` are never both zero.
+     * - When 'from' and 'to' are both non-zero, ''from'''s 'tokenId' will be
+     * transferred to 'to'.
+     * - When 'from' is zero, 'tokenId' will be minted for 'to'.
+     * - When 'to' is zero, ''from'''s 'tokenId' will be burned.
+     * - 'from' and 'to' are never both zero.
      *
      * To learn more about hooks, head to xref:ROOT:extending-contracts.adoc#using-hooks[Using Hooks].
      */
@@ -1089,8 +1091,8 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      *
      * Calling conditions:
      *
-     * - when `from` and `to` are both non-zero.
-     * - `from` and `to` are never both zero.
+     * - when 'from' and 'to' are both non-zero.
+     * - 'from' and 'to' are never both zero.
      *
      * To learn more about hooks, head to xref:ROOT:extending-contracts.adoc#using-hooks[Using Hooks].
      */
@@ -1139,11 +1141,11 @@ abstract contract ERC721URIStorage is ERC721 {
     }
 
     /**
-     * @dev Sets `_tokenURI` as the tokenURI of `tokenId`.
+     * @dev Sets '_tokenURI' as the tokenURI of 'tokenId'.
      *
      * Requirements:
      *
-     * - `tokenId` must exist.
+     * - 'tokenId' must exist.
      */
     function _setTokenURI(uint256 tokenId, string memory _tokenURI) internal virtual {
         require(_exists(tokenId), "ERC721URIStorage: URI set of nonexistent token");
@@ -1151,12 +1153,12 @@ abstract contract ERC721URIStorage is ERC721 {
     }
 
     /**
-     * @dev Destroys `tokenId`.
+     * @dev Destroys 'tokenId'.
      * The approval is cleared when the token is burned.
      *
      * Requirements:
      *
-     * - `tokenId` must exist.
+     * - 'tokenId' must exist.
      *
      * Emits a {Transfer} event.
      */
@@ -1186,7 +1188,7 @@ abstract contract ERC721URIStorage is ERC721 {
  */
 interface IAccessControlEnumerable is IAccessControl {
     /**
-     * @dev Returns one of the accounts that have `role`. `index` must be a
+     * @dev Returns one of the accounts that have 'role'. 'index' must be a
      * value between 0 and {getRoleMemberCount}, non-inclusive.
      *
      * Role bearers are not sorted in any particular way, and their ordering may
@@ -1200,7 +1202,7 @@ interface IAccessControlEnumerable is IAccessControl {
     function getRoleMember(bytes32 role, uint256 index) external view returns (address);
 
     /**
-     * @dev Returns the number of accounts that have `role`. Can be used
+     * @dev Returns the number of accounts that have 'role'. Can be used
      * together with {getRoleMember} to enumerate all bearers of a role.
      */
     function getRoleMemberCount(bytes32 role) external view returns (uint256);
@@ -1223,34 +1225,34 @@ interface IAccessControlEnumerable is IAccessControl {
  * applications may benefit from on-chain enumerability, for those cases see
  * {AccessControlEnumerable}.
  *
- * Roles are referred to by their `bytes32` identifier. These should be exposed
+ * Roles are referred to by their 'bytes32' identifier. These should be exposed
  * in the external API and be unique. The best way to achieve this is by
- * using `public constant` hash digests:
+ * using 'public constant' hash digests:
  *
- * ```
+ * '''
  * bytes32 public constant MY_ROLE = keccak256("MY_ROLE");
- * ```
+ * '''
  *
  * Roles can be used to represent a set of permissions. To restrict access to a
  * function call, use {hasRole}:
  *
- * ```
+ * '''
  * function foo() public {
  *     require(hasRole(MY_ROLE, msg.sender));
  *     ...
  * }
- * ```
+ * '''
  *
  * Roles can be granted and revoked dynamically via the {grantRole} and
  * {revokeRole} functions. Each role has an associated admin role, and only
  * accounts that have a role's admin role can call {grantRole} and {revokeRole}.
  *
- * By default, the admin role for all roles is `DEFAULT_ADMIN_ROLE`, which means
+ * By default, the admin role for all roles is 'DEFAULT_ADMIN_ROLE', which means
  * that only accounts with this role will be able to grant or revoke other
  * roles. More complex role relationships can be created by using
  * {_setRoleAdmin}.
  *
- * WARNING: The `DEFAULT_ADMIN_ROLE` is also its own admin: it has permission to
+ * WARNING: The 'DEFAULT_ADMIN_ROLE' is also its own admin: it has permission to
  * grant and revoke this role. Extra precautions should be taken to secure
  * accounts that have been granted it.
  */
@@ -1287,14 +1289,14 @@ abstract contract AccessControl is Context, IAccessControl, ERC165 {
     }
 
     /**
-     * @dev Returns `true` if `account` has been granted `role`.
+     * @dev Returns 'true' if 'account' has been granted 'role'.
      */
     function hasRole(bytes32 role, address account) public view virtual override returns (bool) {
         return _roles[role].members[account];
     }
 
     /**
-     * @dev Revert with a standard message if `_msgSender()` is missing `role`.
+     * @dev Revert with a standard message if '_msgSender()' is missing 'role'.
      * Overriding this function changes the behavior of the {onlyRole} modifier.
      *
      * Format of the revert message is described in {_checkRole}.
@@ -1306,7 +1308,7 @@ abstract contract AccessControl is Context, IAccessControl, ERC165 {
     }
 
     /**
-     * @dev Revert with a standard message if `account` is missing `role`.
+     * @dev Revert with a standard message if 'account' is missing 'role'.
      *
      * The format of the revert reason is given by the following regular expression:
      *
@@ -1328,7 +1330,7 @@ abstract contract AccessControl is Context, IAccessControl, ERC165 {
     }
 
     /**
-     * @dev Returns the admin role that controls `role`. See {grantRole} and
+     * @dev Returns the admin role that controls 'role'. See {grantRole} and
      * {revokeRole}.
      *
      * To change a role's admin, use {_setRoleAdmin}.
@@ -1338,45 +1340,45 @@ abstract contract AccessControl is Context, IAccessControl, ERC165 {
     }
 
     /**
-     * @dev Grants `role` to `account`.
+     * @dev Grants 'role' to 'account'.
      *
-     * If `account` had not been already granted `role`, emits a {RoleGranted}
+     * If 'account' had not been already granted 'role', emits a {RoleGranted}
      * event.
      *
      * Requirements:
      *
-     * - the caller must have ``role``'s admin role.
+     * - the caller must have ''role'''s admin role.
      */
     function grantRole(bytes32 role, address account) public virtual override onlyRole(getRoleAdmin(role)) {
         _grantRole(role, account);
     }
 
     /**
-     * @dev Revokes `role` from `account`.
+     * @dev Revokes 'role' from 'account'.
      *
-     * If `account` had been granted `role`, emits a {RoleRevoked} event.
+     * If 'account' had been granted 'role', emits a {RoleRevoked} event.
      *
      * Requirements:
      *
-     * - the caller must have ``role``'s admin role.
+     * - the caller must have ''role'''s admin role.
      */
     function revokeRole(bytes32 role, address account) public virtual override onlyRole(getRoleAdmin(role)) {
         _revokeRole(role, account);
     }
 
     /**
-     * @dev Revokes `role` from the calling account.
+     * @dev Revokes 'role' from the calling account.
      *
      * Roles are often managed via {grantRole} and {revokeRole}: this function's
      * purpose is to provide a mechanism for accounts to lose their privileges
      * if they are compromised (such as when a trusted device is misplaced).
      *
-     * If the calling account had been revoked `role`, emits a {RoleRevoked}
+     * If the calling account had been revoked 'role', emits a {RoleRevoked}
      * event.
      *
      * Requirements:
      *
-     * - the caller must be `account`.
+     * - the caller must be 'account'.
      */
     function renounceRole(bytes32 role, address account) public virtual override {
         require(account == _msgSender(), "AccessControl: can only renounce roles for self");
@@ -1385,9 +1387,9 @@ abstract contract AccessControl is Context, IAccessControl, ERC165 {
     }
 
     /**
-     * @dev Grants `role` to `account`.
+     * @dev Grants 'role' to 'account'.
      *
-     * If `account` had not been already granted `role`, emits a {RoleGranted}
+     * If 'account' had not been already granted 'role', emits a {RoleGranted}
      * event. Note that unlike {grantRole}, this function doesn't perform any
      * checks on the calling account.
      *
@@ -1407,7 +1409,7 @@ abstract contract AccessControl is Context, IAccessControl, ERC165 {
     }
 
     /**
-     * @dev Sets `adminRole` as ``role``'s admin role.
+     * @dev Sets 'adminRole' as ''role'''s admin role.
      *
      * Emits a {RoleAdminChanged} event.
      */
@@ -1418,7 +1420,7 @@ abstract contract AccessControl is Context, IAccessControl, ERC165 {
     }
 
     /**
-     * @dev Grants `role` to `account`.
+     * @dev Grants 'role' to 'account'.
      *
      * Internal function without access restriction.
      */
@@ -1430,7 +1432,7 @@ abstract contract AccessControl is Context, IAccessControl, ERC165 {
     }
 
     /**
-     * @dev Revokes `role` from `account`.
+     * @dev Revokes 'role' from 'account'.
      *
      * Internal function without access restriction.
      */
@@ -1458,7 +1460,7 @@ abstract contract AccessControl is Context, IAccessControl, ERC165 {
  * (O(1)).
  * - Elements are enumerated in O(n). No guarantees are made on the ordering.
  *
- * ```
+ * '''
  * contract Example {
  *     // Add the library methods
  *     using EnumerableSet for EnumerableSet.AddressSet;
@@ -1466,10 +1468,10 @@ abstract contract AccessControl is Context, IAccessControl, ERC165 {
  *     // Declare a set state variable
  *     EnumerableSet.AddressSet private mySet;
  * }
- * ```
+ * '''
  *
- * As of v3.3.0, sets of type `bytes32` (`Bytes32Set`), `address` (`AddressSet`)
- * and `uint256` (`UintSet`) are supported.
+ * As of v3.3.0, sets of type 'bytes32' ('Bytes32Set'), 'address' ('AddressSet')
+ * and 'uint256' ('UintSet') are supported.
  */
 library EnumerableSet {
     // To implement this library for multiple types with as little code
@@ -1484,7 +1486,7 @@ library EnumerableSet {
     struct Set {
         // Storage of set values
         bytes32[] _values;
-        // Position of the value in the `values` array, plus 1 because index 0
+        // Position of the value in the 'values' array, plus 1 because index 0
         // means a value is not in the set.
         mapping(bytes32 => uint256) _indexes;
     }
@@ -1562,14 +1564,14 @@ library EnumerableSet {
     }
 
     /**
-     * @dev Returns the value stored at position `index` in the set. O(1).
+     * @dev Returns the value stored at position 'index' in the set. O(1).
      *
      * Note that there are no guarantees on the ordering of values inside the
      * array, and it may change when more values are added or removed.
      *
      * Requirements:
      *
-     * - `index` must be strictly less than {length}.
+     * - 'index' must be strictly less than {length}.
      */
     function _at(Set storage set, uint256 index) private view returns (bytes32) {
         return set._values[index];
@@ -1628,14 +1630,14 @@ library EnumerableSet {
     }
 
     /**
-     * @dev Returns the value stored at position `index` in the set. O(1).
+     * @dev Returns the value stored at position 'index' in the set. O(1).
      *
      * Note that there are no guarantees on the ordering of values inside the
      * array, and it may change when more values are added or removed.
      *
      * Requirements:
      *
-     * - `index` must be strictly less than {length}.
+     * - 'index' must be strictly less than {length}.
      */
     function at(Bytes32Set storage set, uint256 index) internal view returns (bytes32) {
         return _at(set._inner, index);
@@ -1694,14 +1696,14 @@ library EnumerableSet {
     }
 
     /**
-     * @dev Returns the value stored at position `index` in the set. O(1).
+     * @dev Returns the value stored at position 'index' in the set. O(1).
      *
      * Note that there are no guarantees on the ordering of values inside the
      * array, and it may change when more values are added or removed.
      *
      * Requirements:
      *
-     * - `index` must be strictly less than {length}.
+     * - 'index' must be strictly less than {length}.
      */
     function at(AddressSet storage set, uint256 index) internal view returns (address) {
         return address(uint160(uint256(_at(set._inner, index))));
@@ -1767,14 +1769,14 @@ library EnumerableSet {
     }
 
     /**
-     * @dev Returns the value stored at position `index` in the set. O(1).
+     * @dev Returns the value stored at position 'index' in the set. O(1).
      *
      * Note that there are no guarantees on the ordering of values inside the
      * array, and it may change when more values are added or removed.
      *
      * Requirements:
      *
-     * - `index` must be strictly less than {length}.
+     * - 'index' must be strictly less than {length}.
      */
     function at(UintSet storage set, uint256 index) internal view returns (uint256) {
         return uint256(_at(set._inner, index));
@@ -1817,7 +1819,7 @@ abstract contract AccessControlEnumerable is IAccessControlEnumerable, AccessCon
     }
 
     /**
-     * @dev Returns one of the accounts that have `role`. `index` must be a
+     * @dev Returns one of the accounts that have 'role'. 'index' must be a
      * value between 0 and {getRoleMemberCount}, non-inclusive.
      *
      * Role bearers are not sorted in any particular way, and their ordering may
@@ -1833,7 +1835,7 @@ abstract contract AccessControlEnumerable is IAccessControlEnumerable, AccessCon
     }
 
     /**
-     * @dev Returns the number of accounts that have `role`. Can be used
+     * @dev Returns the number of accounts that have 'role'. Can be used
      * together with {getRoleMember} to enumerate all bearers of a role.
      */
     function getRoleMemberCount(bytes32 role) public view virtual override returns (uint256) {
@@ -1868,7 +1870,7 @@ abstract contract AccessControlEnumerable is IAccessControlEnumerable, AccessCon
  * @dev Provides counters that can only be incremented, decremented or reset. This can be used e.g. to track the number
  * of elements in a mapping, issuing ERC721 ids, or counting request ids.
  *
- * Include with `using Counters for Counters.Counter;`
+ * Include with 'using Counters for Counters.Counter;'
  */
 library Counters {
     struct Counter {
@@ -1967,5 +1969,5 @@ contract MinterNFT is ERC721, ERC721URIStorage, AccessControlEnumerable {
         return super.supportsInterface(interfaceId);
     }
 }
-
-
+`
+}

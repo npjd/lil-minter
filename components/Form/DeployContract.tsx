@@ -7,6 +7,8 @@ import {
 } from '../../artifacts/contracts/MinterNFT.sol/MinterNFT.json'
 import { validAddress } from '../../util/validAddress'
 import { useAlert } from 'react-alert'
+import { getFlattenedContract } from '../../util/getFlattenedContarct'
+
 
 export default function DeployContract({
   setContractAddress,
@@ -24,8 +26,6 @@ export default function DeployContract({
   const [name, setName] = useState('')
   const [tokenSymbol, setTokenSymbol] = useState('')
   const [deploying, setDeploying] = useState(false)
-
-
 
   const deployContract = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -52,11 +52,71 @@ export default function DeployContract({
       const deployContract = await NFTContract.deploy(name, tokenSymbol)
       setContractAddress(deployContract.address)
       localStorage.setItem('contractAddress', deployContract.address)
-      setState('configure')
+
+      const response = await fetch(
+        'https://evmapi.confluxscan.net/contract/verifysourcecode',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            sourceCode: getFlattenedContract(),
+            contractaddress: deployContract.address,
+            codeformat: 'solidity-single-file',
+            contractname: name,
+            compilerversion: '0.8.10',
+            optimizationUsed: 0,
+            runs: 200,
+            constructorArguements: '',
+            evmversion: 'istanbul',
+            licenseType: 1,
+          }),
+        }
+      )
+      const data = await response.json()
+      if (data.success) {
+        alert.success('Contract deployed!')
+        setState('configure')
+      } else {
+        alert.error('Error when verifying contract')
+      }
     } catch (e) {
       alert.error('An error occurred when deploying contract')
     }
     setDeploying(false)
+  }
+
+  const checkIfContractImportable = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault()
+    if (!validAddress(address)) {
+      alert.error('Invalid address')
+      return
+    }
+    if (walletStatus == 'active') {
+      const { ethereum } = window as any
+      const provider = new ethers.providers.Web3Provider(ethereum)
+      const signer = provider.getSigner()
+      const contract = new ethers.Contract(address, abi, signer)
+      const isMinter = await contract.hasRole(
+        ethers.utils.keccak256(ethers.utils.toUtf8Bytes('MINTER_ROLE')),
+        signer._address
+      )
+      if (isMinter) {
+        setState('configure')
+        setContractAddress(address)
+        localStorage.setItem('contractAddress', address)
+      } else {
+        alert.error('You do not have the MINTER_ROLE')
+        return
+      }
+    } else {
+      setState('configure')
+      setContractAddress(address)
+      localStorage.setItem('contractAddress', address)
+    }
   }
 
   const renderSetting = () => {
@@ -101,16 +161,7 @@ export default function DeployContract({
           />
           <button
             className="btn-primary disabled:bg-gray-500 disabled:hover:bg-gray-600"
-            onClick={(e) => {
-              e.preventDefault()
-              if (!validAddress(address)) {
-                alert.error('Invalid address')
-                return
-              }
-              setState('configure')
-              setContractAddress(address)
-              localStorage.setItem('contractAddress', address)
-            }}
+            onClick={checkIfContractImportable}
             disabled={!validAddress(address)}
           >
             Enter
