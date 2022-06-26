@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ethers } from 'ethers'
-import { useStatus } from '@cfxjs/use-wallet/dist/ethereum'
+import { useChainId, useStatus } from '@cfxjs/use-wallet/dist/ethereum'
 import {
   abi,
   bytecode,
@@ -8,7 +8,6 @@ import {
 import { validAddress } from '../../util/validAddress'
 import { useAlert } from 'react-alert'
 import { getFlattenedContract } from '../../util/getFlattenedContarct'
-
 
 export default function DeployContract({
   setContractAddress,
@@ -20,6 +19,7 @@ export default function DeployContract({
   setState: (state: 'configure') => void
 }) {
   const alert = useAlert()
+  const chainId = useChainId()
   const walletStatus = useStatus()
   const [setting, setSetting] = useState<'deploy' | 'import' | ''>('')
   const [address, setAddress] = useState('')
@@ -41,6 +41,12 @@ export default function DeployContract({
       return
     }
 
+    if (!(chainId == '1030' || chainId == '71')) {
+      alert.error('Please switch to eSpace')
+      setDeploying(false)
+      return
+    }
+
     console.log('deploying contract')
     alert.info('Deploying contract...')
     const { ethereum } = window as any
@@ -52,36 +58,47 @@ export default function DeployContract({
       const deployContract = await NFTContract.deploy(name, tokenSymbol)
       setContractAddress(deployContract.address)
       localStorage.setItem('contractAddress', deployContract.address)
+      console.log("deployed at ", deployContract.address)
+      alert.success('Contract deployed')
+      setState('configure')
+      
+      // CODE FOR VERIFYING THE CONTRACT
+      // let encodedABIConstructorCall;
 
-      const response = await fetch(
-        'https://evmapi.confluxscan.net/contract/verifysourcecode',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            sourceCode: getFlattenedContract(),
-            contractaddress: deployContract.address,
-            codeformat: 'solidity-single-file',
-            contractname: name,
-            compilerversion: '0.8.10',
-            optimizationUsed: 0,
-            runs: 200,
-            constructorArguements: '',
-            evmversion: 'istanbul',
-            licenseType: 1,
-          }),
-        }
-      )
-      const data = await response.json()
-      if (data.success) {
-        alert.success('Contract deployed!')
-        setState('configure')
-      } else {
-        alert.error('Error when verifying contract')
-      }
+      // const url =
+      //   chainId == '1030'
+      //     ? 'https://evmapi.confluxscan.net/contract/verifysourcecode'
+      //     : 'https://evmapi-testnet.confluxscan.net/contract/verifysourcecode'
+      // const response = await fetch(
+      //   url,
+      //   {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //     body: JSON.stringify({
+      //       sourceCode: getFlattenedContract(),
+      //       contractaddress: deployContract.address,
+      //       codeformat: 'solidity-single-file',
+      //       contractname: name,
+      //       compilerversion: 'v0.8.10-nightly.2021.9.29+commit.7a9f4815',
+      //       optimizationUsed: 0,
+      //       runs: 200,
+      //       constructorArguements: '',
+      //       evmversion: 'istanbul',
+      //       licenseType: 3,
+      //     }),
+      //   }
+      // )
+      // const data = await response.json()
+      // if (data.success) {
+      //   alert.success('Contract deployed!')
+      //   setState('configure')
+      // } else {
+      //   alert.error('Error when verifying contract')
+      // }
     } catch (e) {
+      console.log(e)
       alert.error('An error occurred when deploying contract')
     }
     setDeploying(false)
