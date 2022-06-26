@@ -61,9 +61,14 @@ export default function DeployContract({
       console.log("deployed at ", deployContract.address)
       alert.success('Contract deployed')
       setState('configure')
-      
+
       // CODE FOR VERIFYING THE CONTRACT
-      // let encodedABIConstructorCall;
+      // const abiInterface = new ethers.utils.Interface(abi)
+      // const encodedAbiConstructorCall = abiInterface.encodeFunctionData(
+      //   'constructor',
+      //   [name, tokenSymbol]
+      // )
+      
 
       // const url =
       //   chainId == '1030'
@@ -84,7 +89,7 @@ export default function DeployContract({
       //       compilerversion: 'v0.8.10-nightly.2021.9.29+commit.7a9f4815',
       //       optimizationUsed: 0,
       //       runs: 200,
-      //       constructorArguements: '',
+      //       constructorArguements: encodedAbiConstructorCall,
       //       evmversion: 'istanbul',
       //       licenseType: 3,
       //     }),
