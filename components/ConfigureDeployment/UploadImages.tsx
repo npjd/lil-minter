@@ -1,3 +1,4 @@
+import { set } from 'idb-keyval'
 import React from 'react'
 import ImageUploading, { ImageListType } from 'react-images-uploading'
 import Upload from '../icons/Upload'
@@ -12,7 +13,10 @@ export default function UploadImages({
   const onChange = (imageList: ImageListType) => {
     setImages(imageList)
     console.log("uploaded images" ,imageList)
-    localStorage.setItem('images', JSON.stringify(imageList))
+    set("images", JSON.stringify(imageList)).then(() => {
+      console.log("set images")
+    }
+    )
   }
 
   return (

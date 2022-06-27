@@ -1,3 +1,4 @@
+import { setMany } from 'idb-keyval'
 import React from 'react'
 import { ImageListType } from 'react-images-uploading'
 import NFT from '../../types/NFT'
@@ -29,10 +30,12 @@ export default function ResetNFT({
         setNfts([])
         setImages([])
 
-        localStorage.removeItem('contractAddress')
-        localStorage.removeItem('metadata')
-        localStorage.removeItem('nfts')
-        localStorage.removeItem('images')
+        setMany([
+          ['contractAddress', null],
+          ['metadata', { name: '', description: '', count: 1 }],
+          ['nfts', []],
+          ['images', []],
+        ])
       }}
     >
       RESET

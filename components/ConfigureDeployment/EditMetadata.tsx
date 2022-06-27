@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { ImageListType } from 'react-images-uploading'
+import { set } from 'idb-keyval'
 
 export default function EditMetadata({
   images,
@@ -28,7 +29,7 @@ export default function EditMetadata({
         value={name}
         onChange={(e) => {
           setMetadata({ name: e.target.value, description, count })
-          localStorage.setItem(
+          set(
             'metadata',
             JSON.stringify({
               name: e.target.value,
@@ -47,10 +48,11 @@ export default function EditMetadata({
         value={description}
         onChange={(e) => {
           setMetadata({ name, description: e.target.value, count })
-          localStorage.setItem(
+          set(
             'metadata',
             JSON.stringify({ name, description: e.target.value, count: count })
           )
+
           setDescription(e.target.value)
         }}
         placeholder="Description"
@@ -62,7 +64,7 @@ export default function EditMetadata({
         value={count}
         onChange={(e) => {
           setMetadata({ name, description, count: parseInt(e.target.value) })
-          localStorage.setItem(
+          set(
             'metadata',
             JSON.stringify({
               name,

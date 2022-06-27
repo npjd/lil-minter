@@ -1,3 +1,4 @@
+import { getMany } from 'idb-keyval'
 import React, { useEffect, useState } from 'react'
 import { ImageListType } from 'react-images-uploading'
 import NFT from '../../types/NFT'
@@ -22,41 +23,45 @@ export default function SubmitNFTForm() {
   const [images, setImages] = useState<ImageListType>([])
 
   useEffect(() => {
-    const storedAddress = localStorage.getItem('contractAddress')
-    const storedMetadata = localStorage.getItem('metadata')
-    const storedNfts = localStorage.getItem('nfts')
-    const storedImages = localStorage.getItem('images')
+    const getCachedVals = () => {
+      getMany(['contractAddress', 'metadata', 'nfts', 'images']).then(
+        ([storedAddress, storedMetadata, storedNfts, storedImages]) => {
+          if (storedAddress != null) {
+            setContractAddress(storedAddress)
+          }
+          if (storedMetadata != null) {
+            setMetadata(JSON.parse(storedMetadata))
+          }
 
-    if (storedAddress != null) {
-      setContractAddress(storedAddress)
-    }
-    if (storedMetadata != null) {
-      setMetadata(JSON.parse(storedMetadata))
-    }
+          if (storedNfts != null) {
+            setNfts(JSON.parse(storedNfts))
+          }
+          if (storedImages != null) {
+            setImages(JSON.parse(storedImages))
+          }
 
-    if (storedNfts != null) {
-      setNfts(JSON.parse(storedNfts))
+          if (storedAddress != null) {
+            setState('configure')
+          }
+          if (storedNfts != null && storedMetadata != null) {
+            if (
+              JSON.parse(storedNfts).length >=
+                JSON.parse(storedMetadata).count &&
+              JSON.parse(storedNfts).length > 0
+            ) {
+              setState('assign')
+            } else if (
+              JSON.parse(storedNfts).length <
+                JSON.parse(storedMetadata).count &&
+              JSON.parse(storedNfts).length > 0
+            ) {
+              setState('ping')
+            }
+          }
+        }
+      )
     }
-    if (storedImages != null) {
-      setImages(JSON.parse(storedImages))
-    }
-
-    if (storedAddress != null) {
-      setState('configure')
-    }
-    if (storedNfts != null && storedMetadata != null) {
-      if (
-        JSON.parse(storedNfts).length >= JSON.parse(storedMetadata).count &&
-        JSON.parse(storedNfts).length > 0
-      ) {
-        setState('assign')
-      } else if (
-        JSON.parse(storedNfts).length < JSON.parse(storedMetadata).count &&
-        JSON.parse(storedNfts).length > 0
-      ) {
-        setState('ping')
-      }
-    }
+    getCachedVals()
   }, [])
 
   const renderForm = () => {

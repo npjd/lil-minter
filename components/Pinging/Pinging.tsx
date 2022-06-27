@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { ImageListType } from 'react-images-uploading'
 import { NFTStorage } from 'nft.storage'
-import { CircularProgressbar } from 'react-circular-progressbar'
-import 'react-circular-progressbar/dist/styles.css'
+import { set } from 'idb-keyval'
+
 import NFT from '../../types/NFT'
 import { dataURItoBlob } from '../../util/dataUriToBlob'
 import { renderMetadataString } from '../../util/renderMetadataString'
@@ -97,7 +97,7 @@ export default function Pinging({
       finalNfts.push(...newNfts)
     }
     setNfts([...nfts, ...finalNfts])
-    localStorage.setItem('nfts', JSON.stringify([...nfts, ...finalNfts]))
+    set('nfts', JSON.stringify([...nfts, ...finalNfts]))
     setState("complete")
     console.log('Finished pinning')
     console.log('Final NFTs: ' + finalNfts)

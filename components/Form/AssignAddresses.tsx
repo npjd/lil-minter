@@ -4,6 +4,7 @@ import ImageCard from '../ConfigureDeployment/ImageCard'
 import Papa from 'papaparse'
 import { validAddress } from '../../util/validAddress'
 import { useAlert } from 'react-alert'
+import { set } from 'idb-keyval'
 
 export default function AssignAddresses({
   nfts,
@@ -54,7 +55,7 @@ export default function AssignAddresses({
         })
 
         setNfts(newNfts)
-        localStorage.setItem('nfts', JSON.stringify(newNfts))
+         set('nfts',JSON.stringify(newNfts))
       },
     })
   }
@@ -105,7 +106,7 @@ export default function AssignAddresses({
                       count: metadata.count - 1,
                     })
                     setNfts(newNfts)
-                    localStorage.setItem('nfts', JSON.stringify(newNfts))
+                    set('nfts',JSON.stringify(newNfts))
                   }}
                 >
                   Delete NFT

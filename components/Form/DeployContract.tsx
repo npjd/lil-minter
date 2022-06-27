@@ -9,6 +9,7 @@ import { validAddress } from '../../util/validAddress'
 import { useAlert } from 'react-alert'
 import { getFlattenedContract } from '../../util/getFlattenedContarct'
 import { ParamType } from 'ethers/lib/utils'
+import { set } from 'idb-keyval'
 
 export default function DeployContract({
   setContractAddress,
@@ -58,7 +59,7 @@ export default function DeployContract({
     try {
       const deployContract = await NFTContract.deploy(name, tokenSymbol)
       setContractAddress(deployContract.address)
-      localStorage.setItem('contractAddress', deployContract.address)
+      set("contractAddress", deployContract.address)
       console.log('deployed at ', deployContract.address)
       alert.success('Contract deployed')
       setState('configure')
@@ -126,7 +127,7 @@ export default function DeployContract({
       if (isMinter) {
         setState('configure')
         setContractAddress(address)
-        localStorage.setItem('contractAddress', address)
+        set("contractAddress", address)
       } else {
         alert.error('You do not have the MINTER_ROLE')
         return
@@ -134,7 +135,7 @@ export default function DeployContract({
     } else {
       setState('configure')
       setContractAddress(address)
-      localStorage.setItem('contractAddress', address)
+      set("contractAddress", address)
     }
   }
 
