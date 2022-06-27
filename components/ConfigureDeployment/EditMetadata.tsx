@@ -16,7 +16,7 @@ export default function EditMetadata({
 }) {
   const [name, setName] = useState(metadata.name)
   const [description, setDescription] = useState(metadata.description)
-  const [count, setCount] = useState(images.length)
+  const [count, setCount] = useState(metadata.count)
 
   return (
     <div className="flex flex-col space-y-2 text-left my-5">
@@ -27,8 +27,15 @@ export default function EditMetadata({
         type="text"
         value={name}
         onChange={(e) => {
-          setMetadata({ name:e.target.value, description, count })
-          localStorage.setItem('metadata', JSON.stringify({ name:e.target.value, description:description, count:count }))
+          setMetadata({ name: e.target.value, description, count })
+          localStorage.setItem(
+            'metadata',
+            JSON.stringify({
+              name: e.target.value,
+              description: description,
+              count: count,
+            })
+          )
           setName(e.target.value)
         }}
         placeholder="Name"
@@ -39,8 +46,11 @@ export default function EditMetadata({
         type="text"
         value={description}
         onChange={(e) => {
-          setMetadata({ name, description:e.target.value, count })
-          localStorage.setItem('metadata', JSON.stringify({ name, description:e.target.value, count:count }))
+          setMetadata({ name, description: e.target.value, count })
+          localStorage.setItem(
+            'metadata',
+            JSON.stringify({ name, description: e.target.value, count: count })
+          )
           setDescription(e.target.value)
         }}
         placeholder="Description"
@@ -52,7 +62,14 @@ export default function EditMetadata({
         value={count}
         onChange={(e) => {
           setMetadata({ name, description, count: parseInt(e.target.value) })
-          localStorage.setItem('metadata', JSON.stringify({ name, description:description, count:parseInt(e.target.value) }))
+          localStorage.setItem(
+            'metadata',
+            JSON.stringify({
+              name,
+              description: description,
+              count: parseInt(e.target.value),
+            })
+          )
           setCount(parseInt(e.target.value))
         }}
         disabled={images.length !== 1}

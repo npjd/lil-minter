@@ -3,22 +3,13 @@ import { ImageType } from 'react-images-uploading'
 
 export default function ImageCard({
   image,
-  index,
-  metadata,
+  name,
+  description,
 }: {
   image: ImageType
-  index: number
-  metadata: {
-    name: string
-    description: string
-    count: number
-  }
+  name: string
+  description: string
 }) {
-  const renderMetadataString = (string:string):string =>{
-    let newString = string.replace("`index`",index.toString())
-    newString = newString.replace("`count`", metadata.count.toString())
-    return newString
-  }
 
   return (
     <div className="rounded flex-shrink-0 bg-gray-100 shadow-md h-80 w-60 flex flex-col border-2 border-gray-200">
@@ -27,9 +18,9 @@ export default function ImageCard({
       ) : (
         <img src={image['data_url']} />
       )}
-      <div className="justify-self-end justify-start bg-white h-full ">
-        <p>Name: {renderMetadataString(metadata.name)}</p>
-        <p>Description: {renderMetadataString(metadata.description)}</p>
+      <div className="justify-self-end justify-start bg-white h-full p-2">
+        <p className="truncate">Name: {name}</p>
+        <p className="truncate">Description: {description}</p>
       </div>
     </div>
   )

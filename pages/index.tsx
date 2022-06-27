@@ -20,7 +20,8 @@ const Home: NextPage = () => {
         </div>
       </nav>
 
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center mt-24">
+
+      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center mb-10">
         <Hero />
 
         <div className=" relative mt-12 w-5/6">
@@ -29,7 +30,6 @@ const Home: NextPage = () => {
       </main>
       <Footer />
 
-      
     </div>
   )
 }
