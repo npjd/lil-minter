@@ -10,6 +10,7 @@ export default function AssignAddresses({
   setNfts,
   metadata,
   setWebPageState,
+  setMetadata,
 }: {
   nfts: NFT[]
   setNfts: (nfts: NFT[]) => void
@@ -21,7 +22,13 @@ export default function AssignAddresses({
   setWebPageState: (
     state: 'deploy' | 'configure' | 'ping' | 'assign' | 'mint'
   ) => void
+  setMetadata: (metadata: {
+    name: string
+    description: string
+    count: number
+  }) => void
 }) {
+  // TODO: CREATE RESTORE BUTTON
   const alert = useAlert()
   const csvUploadHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files == null) {
@@ -32,7 +39,7 @@ export default function AssignAddresses({
       skipEmptyLines: true,
       complete: function (results) {
         const newNfts: NFT[] = []
-        alert.info("File uploaded")
+        alert.info('File uploaded')
         // @ts-ignore
         const addresses = results.data.map((row) => row[0])
 
@@ -70,7 +77,11 @@ export default function AssignAddresses({
         {nfts.map((nft, index) => {
           return (
             <div key={index} className="flex flex-col my-4">
-              <ImageCard image={nft.image} index={index} metadata={metadata} />
+              <ImageCard
+                image={nft.image}
+                name={nft.name}
+                description={nft.description}
+              />
               <input
                 className="text-input rounded-none"
                 type="text"
@@ -82,12 +93,17 @@ export default function AssignAddresses({
                   setNfts(newNfts)
                 }}
               />
-              {!(index == 0 && nfts.length==1) && (
+              {!(index == 0 && nfts.length == 1) && (
                 <button
                   className="bg-red-500 hover:bg-red-600 p-2 rounded text-white"
                   onClick={() => {
                     let newNfts = [...nfts]
                     newNfts.splice(index, 1)
+                    setMetadata({
+                      name: metadata.name,
+                      description: metadata.description,
+                      count: metadata.count - 1,
+                    })
                     setNfts(newNfts)
                     localStorage.setItem('nfts', JSON.stringify(newNfts))
                   }}

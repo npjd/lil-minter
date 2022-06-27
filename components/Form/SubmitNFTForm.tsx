@@ -95,6 +95,7 @@ export default function SubmitNFTForm() {
             setNfts={setNfts}
             metadata={metadata}
             setWebPageState={setState}
+            setMetadata={setMetadata}
           />
         )
       case 'mint':

@@ -22,6 +22,7 @@ export default function Mint({
   const [status, setStatus] = useState<'success' | 'error' | ''>('')
   const walletStatus = useStatus()
   const chainId = useChainId()
+  // TODO: FIX BATCH MINTING
   const mintNFTs = async () => {
     if (!(chainId == '1030' || chainId == '71')) {
       alert.info('Changing to eSpace chain...')

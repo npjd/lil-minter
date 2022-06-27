@@ -8,6 +8,7 @@ import {
 import { validAddress } from '../../util/validAddress'
 import { useAlert } from 'react-alert'
 import { getFlattenedContract } from '../../util/getFlattenedContarct'
+import { ParamType } from 'ethers/lib/utils'
 
 export default function DeployContract({
   setContractAddress,
@@ -58,50 +59,46 @@ export default function DeployContract({
       const deployContract = await NFTContract.deploy(name, tokenSymbol)
       setContractAddress(deployContract.address)
       localStorage.setItem('contractAddress', deployContract.address)
-      console.log("deployed at ", deployContract.address)
+      console.log('deployed at ', deployContract.address)
       alert.success('Contract deployed')
       setState('configure')
 
-      // CODE FOR VERIFYING THE CONTRACT
       // const abiInterface = new ethers.utils.Interface(abi)
-      // const encodedAbiConstructorCall = abiInterface.encodeFunctionData(
-      //   'constructor',
-      //   [name, tokenSymbol]
-      // )
-      
+      // const params = [
+      //   ParamType.fromString('string _name'),
+      //   ParamType.fromString('string _symbol'),
+      // ]
+      // const encodedAbiConstructorCall = abiInterface._encodeParams(params, [
+      //   name,
+      //   tokenSymbol,
+      // ])
+      // console.log('encodedAbiConstructorCall', encodedAbiConstructorCall)
 
       // const url =
       //   chainId == '1030'
-      //     ? 'https://evmapi.confluxscan.net/contract/verifysourcecode'
-      //     : 'https://evmapi-testnet.confluxscan.net/contract/verifysourcecode'
-      // const response = await fetch(
-      //   url,
-      //   {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify({
-      //       sourceCode: getFlattenedContract(),
-      //       contractaddress: deployContract.address,
-      //       codeformat: 'solidity-single-file',
-      //       contractname: name,
-      //       compilerversion: 'v0.8.10-nightly.2021.9.29+commit.7a9f4815',
-      //       optimizationUsed: 0,
-      //       runs: 200,
-      //       constructorArguements: encodedAbiConstructorCall,
-      //       evmversion: 'istanbul',
-      //       licenseType: 3,
-      //     }),
-      //   }
-      // )
-      // const data = await response.json()
-      // if (data.success) {
-      //   alert.success('Contract deployed!')
-      //   setState('configure')
-      // } else {
-      //   alert.error('Error when verifying contract')
-      // }
+      //     ? 'https://evmapi.confluxscan.net/api'
+      //     : 'https://evmapi-testnet.confluxscan.net/api'
+      // const response = await fetch(url, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //     module: 'contract',
+      //     action: 'verifysourcecode',
+      //     sourceCode: getFlattenedContract(),
+      //     contractaddress: deployContract.address,
+      //     codeformat: 'solidity-single-file',
+      //     contractname: 'MinterNFT',
+      //     compilerversion: 'v0.8.10+commit.fc410830',
+      //     optimizationUsed: 0,
+      //     runs: 200,
+      //     constructorArguements: encodedAbiConstructorCall,
+      //     evmversion: 'istanbul',
+      //     licenseType: 3,
+      //   }),
+      //   redirect: 'follow',
+      // })
     } catch (e) {
       console.log(e)
       alert.error('An error occurred when deploying contract')
