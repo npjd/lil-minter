@@ -29,14 +29,11 @@ export default function EditMetadata({
         value={name}
         onChange={(e) => {
           setMetadata({ name: e.target.value, description, count })
-          set(
-            'metadata',
-            JSON.stringify({
-              name: e.target.value,
-              description: description,
-              count: count,
-            })
-          )
+          set('metadata', {
+            name: e.target.value,
+            description: description,
+            count: count,
+          })
           setName(e.target.value)
         }}
         placeholder="Name"
@@ -48,10 +45,7 @@ export default function EditMetadata({
         value={description}
         onChange={(e) => {
           setMetadata({ name, description: e.target.value, count })
-          set(
-            'metadata',
-            JSON.stringify({ name, description: e.target.value, count: count })
-          )
+          set('metadata', { name, description: e.target.value, count: count })
 
           setDescription(e.target.value)
         }}
@@ -64,14 +58,11 @@ export default function EditMetadata({
         value={count}
         onChange={(e) => {
           setMetadata({ name, description, count: parseInt(e.target.value) })
-          set(
-            'metadata',
-            JSON.stringify({
-              name,
-              description: description,
-              count: parseInt(e.target.value),
-            })
-          )
+          set('metadata', {
+            name,
+            description: description,
+            count: parseInt(e.target.value),
+          })
           setCount(parseInt(e.target.value))
         }}
         disabled={images.length !== 1}

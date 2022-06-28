@@ -19,9 +19,9 @@
     "papaparse": "^5.3.2",
     "react": "18.1.0",
     "react-alert": "^7.0.3",
+    "react-circular-progressbar": "^2.1.0",
     "react-dom": "18.1.0",
-    "react-images-uploading": "^3.1.6",
-    "react-loading": "^2.0.3"
+    "react-images-uploading": "^3.1.6"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.6",

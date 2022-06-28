@@ -9,6 +9,8 @@ import {
   connect,
   switchChain,
 } from '@cfxjs/use-wallet/dist/ethereum'
+import { sliceIntoChunks } from '../../util/sliceIntoChunks'
+import { get, set } from 'idb-keyval'
 
 export default function Mint({
   nfts,
@@ -30,15 +32,24 @@ export default function Mint({
     }
     setMinting(true)
     alert.info('Minting NFTs...')
+    const startingIndex = await get('mintingIndex') || 0
     const { ethereum } = window as any
     const provider = new ethers.providers.Web3Provider(ethereum)
     const signer = provider.getSigner()
-    const toAddresses = nfts.map((nft) => nft.address)
-    const uris = nfts.map((nft) => nft.uri)
+    const toAddresses = sliceIntoChunks(nfts.map((nft) => nft.address),100)
+    const uris = sliceIntoChunks(nfts.map((nft) => nft.uri),100)
     const contract = new ethers.Contract(address, abi, signer)
     try {
-      const val = await contract.batchMint(toAddresses, uris)
-      console.log(val)
+
+      for (let ii = startingIndex; ii < uris.length; ii++) {
+        const currentRecipientBatch = toAddresses[ii]
+        const currentUriBatch = uris[ii]
+        const val = await contract.batchMint(currentRecipientBatch, currentUriBatch)
+        console.log(val)
+        alert.success(`Minted batch ${ii+1} of ${uris.length}`)
+        await set('mintingIndex', ii + 1)
+      }
+
       setMinting(false)
       alert.success('Minted!')
       setStatus('success')

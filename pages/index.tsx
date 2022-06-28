@@ -28,7 +28,7 @@ const Home: NextPage = () => {
           <SubmitNFTForm />
         </div>
       </main>
-      <Footer />
+
 
     </div>
   )

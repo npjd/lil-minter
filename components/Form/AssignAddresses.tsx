@@ -55,7 +55,7 @@ export default function AssignAddresses({
         })
 
         setNfts(newNfts)
-         set('nfts',JSON.stringify(newNfts))
+         set('nfts',newNfts)
       },
     })
   }
@@ -106,7 +106,7 @@ export default function AssignAddresses({
                       count: metadata.count - 1,
                     })
                     setNfts(newNfts)
-                    set('nfts',JSON.stringify(newNfts))
+                    set('nfts',newNfts)
                   }}
                 >
                   Delete NFT

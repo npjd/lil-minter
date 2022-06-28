@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { ImageListType } from 'react-images-uploading'
-import { NFTStorage } from 'nft.storage'
 import { set } from 'idb-keyval'
+import { NFTStorage } from 'nft.storage'
+import { useEffect, useState } from 'react'
+import { ImageListType } from 'react-images-uploading'
 
+import { CircularProgressbar } from 'react-circular-progressbar'
+import 'react-circular-progressbar/dist/styles.css'
 import NFT from '../../types/NFT'
 import { dataURItoBlob } from '../../util/dataUriToBlob'
 import { renderMetadataString } from '../../util/renderMetadataString'
-import ReactLoading from 'react-loading'
 
 export default function Pinging({
   images,
@@ -28,6 +29,15 @@ export default function Pinging({
   ) => void
 }) {
   const [state, setState] = useState<'start' | 'pinging' | 'complete'>('start')
+  const [progress, setProgress] = useState(
+    Math.round((nfts.length / metadata.count) * 100)
+  )
+
+  useEffect(() => {
+    if (nfts.length == metadata.count) {
+      setState('complete')
+    }
+  }, [])
 
   const pinIpfs = async () => {
     if (process.env.NFT_STORAGE_KEY == undefined) {
@@ -38,7 +48,7 @@ export default function Pinging({
     setState('pinging')
     let index = nfts.length
     const endingIndex = metadata.count
-    const finalNfts = []
+    const finalNfts = nfts
 
     console.log('Starting at index: ' + index)
     console.log('Ending at index: ' + endingIndex)
@@ -95,10 +105,12 @@ export default function Pinging({
       const newNfts = await Promise.all(batchRequests)
       console.log('Batch requests resolved')
       finalNfts.push(...newNfts)
+      setNfts(finalNfts)
+      setProgress(Math.round((nfts.length / metadata.count) * 100))
+      await set('nfts', finalNfts)
     }
-    setNfts([...nfts, ...finalNfts])
-    set('nfts', JSON.stringify([...nfts, ...finalNfts]))
-    setState("complete")
+
+    setState('complete')
     console.log('Finished pinning')
     console.log('Final NFTs: ' + finalNfts)
   }
@@ -108,12 +120,19 @@ export default function Pinging({
       {state == 'start' && (
         <>
           {nfts.length > 1 && <p>Picking up from index {nfts.length}</p>}
-          <button className="btn-primary" onClick={pinIpfs}>Ping Nfts!</button>
-          <p>NFT data is uploaded onto IPFS, a decentralized file storing system. It's used to keep your images and metadata safe!</p>
+          <button className="btn-primary" onClick={pinIpfs}>
+            Ping Nfts!
+          </button>
+          <p>
+            NFT data is uploaded onto IPFS, a decentralized file storing system.
+            It is used to keep your images and metadata safe!
+          </p>
         </>
       )}
-      {state == 'pinging' && (
-        <ReactLoading type={'spin'} color={'black'} height={200} width={200} />
+      {(state == 'pinging' || state == 'complete') && (
+        <div style={{ width: 200, height: 200 }}>
+          <CircularProgressbar value={progress} text={`${progress}%`} />
+        </div>
       )}
 
       {state == 'complete' && (

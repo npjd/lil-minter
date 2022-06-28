@@ -6,17 +6,32 @@ import Upload from '../icons/Upload'
 export default function UploadImages({
   images,
   setImages,
+  setMetadata,
 }: {
   images: ImageListType
   setImages: (images: ImageListType) => void
+  setMetadata: (metadata: {
+    name: string
+    description: string
+    count: number
+  }) => void
 }) {
   const onChange = (imageList: ImageListType) => {
     setImages(imageList)
-    console.log("uploaded images" ,imageList)
-    set("images", JSON.stringify(imageList)).then(() => {
-      console.log("set images")
-    }
-    )
+    console.log('uploaded images', imageList)
+    set('images', imageList).then(() => {
+      console.log('set images')
+    })
+    setMetadata({
+      name: '',
+      description: '',
+      count: imageList.length,
+    })
+    set('metadata', {
+      name: '',
+      description: '',
+      count: imageList.length,
+    })
   }
 
   return (
@@ -41,8 +56,10 @@ export default function UploadImages({
                 onClick={onImageUpload}
                 {...dragProps}
               >
-                <Upload/>
-                <p className="text-xl">{isDragging ? 'Drop Images' : 'Upload or Drop Image(s)'}</p>
+                <Upload />
+                <p className="text-xl">
+                  {isDragging ? 'Drop Images' : 'Upload or Drop Image(s)'}
+                </p>
               </div>
             )}
             &nbsp;

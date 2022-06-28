@@ -22,47 +22,47 @@ export default function SubmitNFTForm() {
   const [nfts, setNfts] = useState<NFT[]>([])
   const [images, setImages] = useState<ImageListType>([])
 
-  useEffect(() => {
-    const getCachedVals = () => {
-      getMany(['contractAddress', 'metadata', 'nfts', 'images']).then(
-        ([storedAddress, storedMetadata, storedNfts, storedImages]) => {
-          if (storedAddress != null) {
-            setContractAddress(storedAddress)
-          }
-          if (storedMetadata != null) {
-            setMetadata(JSON.parse(storedMetadata))
-          }
+  // useEffect(() => {
+  //   const getCachedVals = () => {
+  //     getMany(['contractAddress', 'metadata', 'nfts', 'images']).then(
+  //       ([storedAddress, storedMetadata, storedNfts, storedImages]) => {
+  //         if (storedAddress != null) {
+  //           setContractAddress(storedAddress)
+  //         }
+  //         if (storedMetadata != null) {
+  //           console.log(storedMetadata)
+  //           setMetadata(storedMetadata)
+  //         }
 
-          if (storedNfts != null) {
-            setNfts(JSON.parse(storedNfts))
-          }
-          if (storedImages != null) {
-            setImages(JSON.parse(storedImages))
-          }
+  //         if (storedNfts != null) {
+  //           setNfts(storedNfts)
+  //         }
+  //         if (storedImages != null) {
+  //           console.log(storedImages)
+  //           setImages(storedImages)
+  //         }
 
-          if (storedAddress != null) {
-            setState('configure')
-          }
-          if (storedNfts != null && storedMetadata != null) {
-            if (
-              JSON.parse(storedNfts).length >=
-                JSON.parse(storedMetadata).count &&
-              JSON.parse(storedNfts).length > 0
-            ) {
-              setState('assign')
-            } else if (
-              JSON.parse(storedNfts).length <
-                JSON.parse(storedMetadata).count &&
-              JSON.parse(storedNfts).length > 0
-            ) {
-              setState('ping')
-            }
-          }
-        }
-      )
-    }
-    getCachedVals()
-  }, [])
+  //         if (storedAddress != null) {
+  //           setState('configure')
+  //         }
+  //         if (storedNfts != null && storedMetadata != null) {
+  //           if (
+  //             storedNfts.length >= storedMetadata.count &&
+  //             storedNfts.length > 0
+  //           ) {
+  //             setState('assign')
+  //           } else if (
+  //             storedNfts.length < storedMetadata.count &&
+  //             storedNfts.length > 0
+  //           ) {
+  //             setState('ping')
+  //           }
+  //         }
+  //       }
+  //     )
+  //   }
+  //   getCachedVals()
+  // }, [])
 
   const renderForm = () => {
     switch (state) {

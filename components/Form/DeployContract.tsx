@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ethers } from 'ethers'
-import { useChainId, useStatus } from '@cfxjs/use-wallet/dist/ethereum'
+import { useAccount, useChainId, useStatus } from '@cfxjs/use-wallet/dist/ethereum'
 import {
   abi,
   bytecode,
@@ -22,6 +22,7 @@ export default function DeployContract({
 }) {
   const alert = useAlert()
   const chainId = useChainId()
+  const account = useAccount()
   const walletStatus = useStatus()
   const [setting, setSetting] = useState<'deploy' | 'import' | ''>('')
   const [address, setAddress] = useState('')
@@ -50,7 +51,9 @@ export default function DeployContract({
     }
 
     console.log('deploying contract')
-    alert.info('Deploying contract...')
+    alert.info('Deploying contract...', {
+      timeout:10000
+    })
     const { ethereum } = window as any
     const provider = new ethers.providers.Web3Provider(ethereum)
     const signer = provider.getSigner()
@@ -61,7 +64,7 @@ export default function DeployContract({
       setContractAddress(deployContract.address)
       set("contractAddress", deployContract.address)
       console.log('deployed at ', deployContract.address)
-      alert.success('Contract deployed')
+      alert.success('Contract deployed to address ' + deployContract.address)
       setState('configure')
 
       // const abiInterface = new ethers.utils.Interface(abi)
@@ -111,18 +114,16 @@ export default function DeployContract({
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault()
-    if (!validAddress(address)) {
-      alert.error('Invalid address')
-      return
-    }
     if (walletStatus == 'active') {
+      alert.info("Checking if you have premissions...")
       const { ethereum } = window as any
       const provider = new ethers.providers.Web3Provider(ethereum)
       const signer = provider.getSigner()
-      const contract = new ethers.Contract(address, abi, signer)
+
+      const contract = new ethers.Contract(address.trim(), abi, signer)
       const isMinter = await contract.hasRole(
         ethers.utils.keccak256(ethers.utils.toUtf8Bytes('MINTER_ROLE')),
-        signer._address
+        account
       )
       if (isMinter) {
         setState('configure')
