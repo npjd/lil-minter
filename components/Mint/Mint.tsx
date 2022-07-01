@@ -24,6 +24,17 @@ export default function Mint({
   const [status, setStatus] = useState<'success' | 'error' | ''>('')
   const walletStatus = useStatus()
   const chainId = useChainId()
+
+
+  const getScanUrl= () =>{
+    if (chainId == '71') {
+      return 'https://evmtestnet.confluxscan.io/token/'+address
+    }
+    else if (chainId == '1030') {
+      return 'https://evm.confluxscan.io/token/'+address
+    }
+  }
+
   // TODO: FIX BATCH MINTING
   const mintNFTs = async () => {
     if (!(chainId == '1030' || chainId == '71')) {
@@ -32,21 +43,29 @@ export default function Mint({
     }
     setMinting(true)
     alert.info('Minting NFTs...')
-    const startingIndex = await get('mintingIndex') || 0
+    const startingIndex = (await get('mintingIndex')) || 0
     const { ethereum } = window as any
     const provider = new ethers.providers.Web3Provider(ethereum)
     const signer = provider.getSigner()
-    const toAddresses = sliceIntoChunks(nfts.map((nft) => nft.address),100)
-    const uris = sliceIntoChunks(nfts.map((nft) => nft.uri),100)
+    const toAddresses = sliceIntoChunks(
+      nfts.map((nft) => nft.address),
+      100
+    )
+    const uris = sliceIntoChunks(
+      nfts.map((nft) => nft.uri),
+      100
+    )
     const contract = new ethers.Contract(address, abi, signer)
     try {
-
       for (let ii = startingIndex; ii < uris.length; ii++) {
         const currentRecipientBatch = toAddresses[ii]
         const currentUriBatch = uris[ii]
-        const val = await contract.batchMint(currentRecipientBatch, currentUriBatch)
+        const val = await contract.batchMint(
+          currentRecipientBatch,
+          currentUriBatch
+        )
         console.log(val)
-        alert.success(`Minted batch ${ii+1} of ${uris.length}`)
+        alert.success(`Minted batch ${ii + 1} of ${uris.length}`)
         await set('mintingIndex', ii + 1)
       }
 
@@ -65,7 +84,11 @@ export default function Mint({
       return <h1>Minting...</h1>
     } else {
       if (status == 'success') {
-        return <h1>Minting Successful</h1>
+        return (
+          <h1>
+            Minting Successful! Check out your contract on scan <a className="underline text-blue-500 hover:text-blue-800 visited:text-purple-600 hover:cursor-pointer" href={getScanUrl()}> here</a>
+          </h1>
+        )
       } else {
         return (
           <div>
