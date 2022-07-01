@@ -92,6 +92,7 @@ export default function AssignAddresses({
                 description={nft.description}
               />
               <input
+              tabIndex={index + 1}
                 className="text-input rounded-none"
                 type="text"
                 placeholder="Enter recipient address"
