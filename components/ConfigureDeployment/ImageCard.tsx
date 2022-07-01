@@ -11,7 +11,7 @@ export default function ImageCard({
   description: string
 }) {
   return (
-    <div className="rounded flex-shrink-0 bg-gray-100 shadow-md w-60 flex flex-col border-2 border-gray-200">
+    <div className="rounded flex-shrink-0 bg-gray-100 shadow-md w-60 flex flex-col border-2 border-gray-200 overflow-hidden">
       {image['data_url'] == undefined ? (
         <h1>Image could not be found!</h1>
       ) : (

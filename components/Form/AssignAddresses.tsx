@@ -43,26 +43,27 @@ export default function AssignAddresses({
         alert.info('File uploaded')
         // @ts-ignore
         const addresses = results.data.map((row) => row[0])
-
+        console.log(addresses.length)
         for (let i = 0; i < addresses.length; i++) {
           if (i >= nfts.length) {
             break
           }
-          if (validAddress(addresses[i])) {
-            newNfts.push({
-              address: addresses[i],
-              image: nfts[i].image,
-              name: nfts[i].name,
-              uri: nfts[i].uri,
-              description: nfts[i].description,
-            })
-          }
+
+          newNfts.push({
+            address: addresses[i],
+            image: nfts[i].image,
+            name: nfts[i].name,
+            uri: nfts[i].uri,
+            description: nfts[i].description,
+          })
         }
-        if (addresses.length < nfts.length) {
-          newNfts.concat(nfts.slice(addresses.length))
+        if (addresses.length < metadata.count) {
+          setNfts(newNfts.concat(nfts.slice(addresses.length)))
+          set('nfts', newNfts.concat(nfts.slice(addresses.length)))
+        } else {
+          setNfts(newNfts)
+          set('nfts', newNfts)
         }
-        setNfts(newNfts)
-        set('nfts', newNfts)
       },
     })
   }
@@ -125,7 +126,7 @@ export default function AssignAddresses({
       </div>
       {nfts.every((nft) => validAddress(nft.address)) && (
         <button
-          className="btn-primary bg-green-500 hover:bg-green-600"
+          className="btn-primary bg-green-500 hover:bg-green-600 w-fit self-center"
           onClick={(e) => {
             e.preventDefault()
             setWebPageState('mint')
