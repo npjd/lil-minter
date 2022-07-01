@@ -125,7 +125,7 @@ export default function SubmitNFTForm() {
         )
       case 'mint':
         return contractAddress ? (
-          <Mint nfts={nfts} address={contractAddress} />
+          <Mint nfts={nfts} address={contractAddress} setAddress={setContractAddress} />
         ) : (
           <p>Contract not found</p>
         )

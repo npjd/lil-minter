@@ -203,7 +203,7 @@ export default function DeployContract({
           }
           <div className="flex flex-row justify-center space-x-3">
             <button
-              className="btn-primary disabled:bg-gray-500 disabled:hover:bg-gray-600"
+              className="btn-primary"
               onClick={checkIfContractImportable}
               disabled={!validAddress(address)}
             >

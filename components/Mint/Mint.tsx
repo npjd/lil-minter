@@ -11,13 +11,16 @@ import {
 } from '@cfxjs/use-wallet/dist/ethereum'
 import { sliceIntoChunks } from '../../util/sliceIntoChunks'
 import { get, set } from 'idb-keyval'
+import { validAddress } from '../../util/validAddress'
 
 export default function Mint({
   nfts,
   address,
+  setAddress,
 }: {
   nfts: NFT[]
   address: string
+  setAddress: (address: string) => void
 }) {
   const [minting, setMinting] = useState<boolean>(false)
   const alert = useAlert()
@@ -25,17 +28,15 @@ export default function Mint({
   const walletStatus = useStatus()
   const chainId = useChainId()
 
-
-  const getScanUrl= () =>{
+  const getScanUrl = () => {
     if (chainId == '71') {
-      return 'https://evmtestnet.confluxscan.io/token/'+address
-    }
-    else if (chainId == '1030') {
-      return 'https://evm.confluxscan.io/token/'+address
+      return 'https://evmtestnet.confluxscan.io/token/' + address
+    } else if (chainId == '1030') {
+      return 'https://evm.confluxscan.io/token/' + address
     }
   }
 
-  // TODO: FIX BATCH MINTING
+
   const mintNFTs = async () => {
     if (!(chainId == '1030' || chainId == '71')) {
       alert.info('Changing to eSpace chain...')
@@ -49,17 +50,18 @@ export default function Mint({
     const signer = provider.getSigner()
     const toAddresses = sliceIntoChunks(
       nfts.map((nft) => nft.address),
-      100
+      50
     )
     const uris = sliceIntoChunks(
       nfts.map((nft) => nft.uri),
-      100
+      50
     )
     const contract = new ethers.Contract(address, abi, signer)
     try {
       for (let ii = startingIndex; ii < uris.length; ii++) {
         const currentRecipientBatch = toAddresses[ii]
         const currentUriBatch = uris[ii]
+
         const val = await contract.batchMint(
           currentRecipientBatch,
           currentUriBatch
@@ -86,7 +88,14 @@ export default function Mint({
       if (status == 'success') {
         return (
           <h1>
-            Minting Successful! Check out your contract on scan <a className="underline text-blue-500 hover:text-blue-800 visited:text-purple-600 hover:cursor-pointer" href={getScanUrl()}> here</a>
+            Minting Successful! Check out your contract on scan{' '}
+            <a
+              className="underline text-blue-500 hover:text-blue-800 visited:text-purple-600 hover:cursor-pointer"
+              href={getScanUrl()}
+            >
+              {' '}
+              here
+            </a>
           </h1>
         )
       } else {
@@ -94,12 +103,30 @@ export default function Mint({
           <div>
             {walletStatus == 'active' ? (
               status == 'error' ? (
-                <>
+                <div className="flex flex-col space-y-2">
                   <h1>Minting Failed</h1>
-                  <button onClick={() => mintNFTs()} className="btn-primary">
+                  <h2>
+                    The current target contract address is {address}. Please
+                    switch this if the contract address is incorrect
+                  </h2>
+                  <input
+                    className="text-input"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
+                  {!validAddress(address) && (
+                    <h2 className="text-red-500">
+                      Please enter an invalid contract address.
+                    </h2>
+                  )}
+                  <button
+                    disabled={!validAddress(address)}
+                    onClick={() => mintNFTs()}
+                    className="btn-primary w-fit self-center"
+                  >
                     Retry
                   </button>
-                </>
+                </div>
               ) : (
                 <button onClick={() => mintNFTs()} className="btn-primary">
                   Mint
