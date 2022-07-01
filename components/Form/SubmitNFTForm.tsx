@@ -1,6 +1,7 @@
 import { getMany } from 'idb-keyval'
 import React, { useEffect, useState } from 'react'
 import { ImageListType } from 'react-images-uploading'
+import { Contract } from '../../types/Contract'
 import NFT from '../../types/NFT'
 import Mint from '../Mint/Mint'
 import Pinging from '../Pinging/Pinging'
@@ -21,11 +22,24 @@ export default function SubmitNFTForm() {
   }>({ name: '', description: '', count: 1 })
   const [nfts, setNfts] = useState<NFT[]>([])
   const [images, setImages] = useState<ImageListType>([])
+  const [storedContracts, setStoredContracts] = useState<Contract[]>([])
 
   useEffect(() => {
     const getCachedVals = () => {
-      getMany(['contractAddress', 'metadata', 'nfts', 'images']).then(
-        ([storedAddress, storedMetadata, storedNfts, storedImages]) => {
+      getMany([
+        'contractAddress',
+        'metadata',
+        'nfts',
+        'images',
+        'storedContracts',
+      ]).then(
+        ([
+          storedAddress,
+          storedMetadata,
+          storedNfts,
+          storedImages,
+          storedContracts,
+        ]) => {
           if (storedAddress != null) {
             setContractAddress(storedAddress)
           }
@@ -40,6 +54,10 @@ export default function SubmitNFTForm() {
           if (storedImages != null) {
             console.log(storedImages)
             setImages(storedImages)
+          }
+
+          if (storedContracts != null) {
+            setStoredContracts(storedContracts)
           }
 
           if (storedAddress != null) {
@@ -71,6 +89,7 @@ export default function SubmitNFTForm() {
           <DeployContract
             setContractAddress={setContractAddress}
             setState={setState}
+            storedContracts={storedContracts}
             contractAddress={contractAddress}
           />
         )

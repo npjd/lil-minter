@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { ethers } from 'ethers'
-import { useAccount, useChainId, useStatus } from '@cfxjs/use-wallet/dist/ethereum'
+import {
+  useAccount,
+  useChainId,
+  useStatus,
+} from '@cfxjs/use-wallet/dist/ethereum'
 import {
   abi,
   bytecode,
@@ -9,16 +13,19 @@ import { validAddress } from '../../util/validAddress'
 import { useAlert } from 'react-alert'
 import { getFlattenedContract } from '../../util/getFlattenedContarct'
 import { ParamType } from 'ethers/lib/utils'
-import { set } from 'idb-keyval'
+import { set, get } from 'idb-keyval'
+import { Contract } from '../../types/Contract'
 
 export default function DeployContract({
   setContractAddress,
   contractAddress,
   setState,
+  storedContracts
 }: {
   setContractAddress: (contractAddress: string) => void
   contractAddress: string | null
-  setState: (state: 'configure') => void
+  setState: (state: 'configure') => void,
+  storedContracts: Contract[]
 }) {
   const alert = useAlert()
   const chainId = useChainId()
@@ -52,7 +59,7 @@ export default function DeployContract({
 
     console.log('deploying contract')
     alert.info('Deploying contract...', {
-      timeout:10000
+      timeout: 10000,
     })
     const { ethereum } = window as any
     const provider = new ethers.providers.Web3Provider(ethereum)
@@ -62,47 +69,30 @@ export default function DeployContract({
     try {
       const deployContract = await NFTContract.deploy(name, tokenSymbol)
       setContractAddress(deployContract.address)
-      set("contractAddress", deployContract.address)
+      set('contractAddress', deployContract.address)
+      get('storedContracts').then((storedContracts) => {
+        if (storedContracts) {
+          set('storedContracts', [
+            ...storedContracts,
+            {
+              address: deployContract.address,
+              name: name,
+              tokenSymbol: tokenSymbol,
+            },
+          ])
+        } else {
+          set('storedContracts', [
+            {
+              address: deployContract.address,
+              name: name,
+              tokenSymbol: tokenSymbol,
+            },
+          ])
+        }
+      })
       console.log('deployed at ', deployContract.address)
       alert.success('Contract deployed to address ' + deployContract.address)
       setState('configure')
-
-      // const abiInterface = new ethers.utils.Interface(abi)
-      // const params = [
-      //   ParamType.fromString('string _name'),
-      //   ParamType.fromString('string _symbol'),
-      // ]
-      // const encodedAbiConstructorCall = abiInterface._encodeParams(params, [
-      //   name,
-      //   tokenSymbol,
-      // ])
-      // console.log('encodedAbiConstructorCall', encodedAbiConstructorCall)
-
-      // const url =
-      //   chainId == '1030'
-      //     ? 'https://evmapi.confluxscan.net/api'
-      //     : 'https://evmapi-testnet.confluxscan.net/api'
-      // const response = await fetch(url, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({
-      //     module: 'contract',
-      //     action: 'verifysourcecode',
-      //     sourceCode: getFlattenedContract(),
-      //     contractaddress: deployContract.address,
-      //     codeformat: 'solidity-single-file',
-      //     contractname: 'MinterNFT',
-      //     compilerversion: 'v0.8.10+commit.fc410830',
-      //     optimizationUsed: 0,
-      //     runs: 200,
-      //     constructorArguements: encodedAbiConstructorCall,
-      //     evmversion: 'istanbul',
-      //     licenseType: 3,
-      //   }),
-      //   redirect: 'follow',
-      // })
     } catch (e) {
       console.log(e)
       alert.error('An error occurred when deploying contract')
@@ -115,7 +105,7 @@ export default function DeployContract({
   ) => {
     e.preventDefault()
     if (walletStatus == 'active') {
-      alert.info("Checking if you have premissions...")
+      alert.info('Checking if you have premissions...')
       const { ethereum } = window as any
       const provider = new ethers.providers.Web3Provider(ethereum)
       const signer = provider.getSigner()
@@ -128,7 +118,7 @@ export default function DeployContract({
       if (isMinter) {
         setState('configure')
         setContractAddress(address)
-        set("contractAddress", address)
+        set('contractAddress', address)
       } else {
         alert.error('You do not have the MINTER_ROLE')
         return
@@ -136,7 +126,7 @@ export default function DeployContract({
     } else {
       setState('configure')
       setContractAddress(address)
-      set("contractAddress", address)
+      set('contractAddress', address)
     }
   }
 
@@ -158,21 +148,35 @@ export default function DeployContract({
             onChange={(e) => setTokenSymbol(e.target.value)}
             className="text-input"
           />
-          <button
-            className="btn-primary"
-            onClick={deployContract}
-            disabled={deploying}
-          >
-            Deploy
-          </button>
+          <div className="flex flex-row justify-center space-x-3">
+            <button
+              className="btn-primary"
+              onClick={deployContract}
+              disabled={deploying}
+            >
+              Deploy
+            </button>
+            <button
+              className="btn-primary bg-red-500 hover:bg-red-600"
+              onClick={() => {
+                setSetting('')
+              }}
+            >
+              Back
+            </button>
+          </div>
         </>
       )
     } else if (setting == 'import') {
       return (
         <>
+        <label>
+          Enter contract address
+        </label>
           <input
             type="text"
             defaultValue={contractAddress ?? ''}
+            placeholder="Contract Address"
             value={address}
             onChange={(e) => {
               setAddress(e.target.value)
@@ -180,13 +184,41 @@ export default function DeployContract({
             }}
             className="text-input"
           />
-          <button
-            className="btn-primary disabled:bg-gray-500 disabled:hover:bg-gray-600"
-            onClick={checkIfContractImportable}
-            disabled={!validAddress(address)}
-          >
-            Enter
-          </button>
+          {
+            storedContracts.length > 0 && (
+              <>
+              <label>Select previously deployed contract </label>
+              <select value={address} onChange={(e)=>{
+                setAddress(e.target.value)
+                setContractAddress(e.target.value)
+                console.log(e.target.value)
+              }}
+              className="p-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+              >
+                {storedContracts.map((contract) => (
+                  <option key={contract.address} value={contract.address}>{contract.name} | {contract.tokenSymbol} | {contract.address} </option>
+                ))}
+              </select>
+              </>
+            )
+          }
+          <div className="flex flex-row justify-center space-x-3">
+            <button
+              className="btn-primary disabled:bg-gray-500 disabled:hover:bg-gray-600"
+              onClick={checkIfContractImportable}
+              disabled={!validAddress(address)}
+            >
+              Enter
+            </button>
+            <button
+              className="btn-primary bg-red-500 hover:bg-red-600"
+              onClick={() => {
+                setSetting('')
+              }}
+            >
+              Back
+            </button>
+          </div>
         </>
       )
     } else {
@@ -213,19 +245,5 @@ export default function DeployContract({
     }
   }
 
-  return (
-    <div className="flex flex-col space-y-2">
-      {renderSetting()}
-      {(setting == 'deploy' || setting == 'import') && (
-        <button
-          className="btn-primary bg-red-500 hover:bg-red-600"
-          onClick={() => {
-            setSetting('')
-          }}
-        >
-          Back
-        </button>
-      )}
-    </div>
-  )
+  return <div className="flex flex-col space-y-2">{renderSetting()}</div>
 }
