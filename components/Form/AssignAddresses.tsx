@@ -43,19 +43,27 @@ export default function AssignAddresses({
         alert.info('File uploaded')
         // @ts-ignore
         const addresses = results.data.map((row) => row[0])
+        console.log(addresses.length)
+        for (let i = 0; i < addresses.length; i++) {
+          if (i >= nfts.length) {
+            break
+          }
 
-        addresses.forEach((address, index) => {
           newNfts.push({
-            uri: nfts[index].uri,
-            image: nfts[index].image,
-            name: nfts[index].name,
-            address: address,
-            description: nfts[index].description,
+            address: addresses[i],
+            image: nfts[i].image,
+            name: nfts[i].name,
+            uri: nfts[i].uri,
+            description: nfts[i].description,
           })
-        })
-
-        setNfts(newNfts)
-         set('nfts',newNfts)
+        }
+        if (addresses.length < metadata.count) {
+          setNfts(newNfts.concat(nfts.slice(addresses.length)))
+          set('nfts', newNfts.concat(nfts.slice(addresses.length)))
+        } else {
+          setNfts(newNfts)
+          set('nfts', newNfts)
+        }
       },
     })
   }
@@ -65,7 +73,7 @@ export default function AssignAddresses({
     <div className="flex flex-col">
       <h2 className="text-xl my-2">Assign Addresses</h2>
       <div className="flex flex-col items-start space-y-2">
-        <label>Upload a CSV file of addresses</label>
+        <label>Upload a file of addresses</label>
         <input
           type="file"
           name="file"
@@ -84,6 +92,7 @@ export default function AssignAddresses({
                 description={nft.description}
               />
               <input
+              tabIndex={index + 1}
                 className="text-input rounded-none"
                 type="text"
                 placeholder="Enter recipient address"
@@ -106,7 +115,7 @@ export default function AssignAddresses({
                       count: metadata.count - 1,
                     })
                     setNfts(newNfts)
-                    set('nfts',newNfts)
+                    set('nfts', newNfts)
                   }}
                 >
                   Delete NFT
@@ -118,7 +127,7 @@ export default function AssignAddresses({
       </div>
       {nfts.every((nft) => validAddress(nft.address)) && (
         <button
-          className="btn-primary bg-green-500 hover:bg-green-600"
+          className="btn-primary bg-green-500 hover:bg-green-600 w-fit self-center"
           onClick={(e) => {
             e.preventDefault()
             setWebPageState('mint')

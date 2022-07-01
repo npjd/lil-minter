@@ -87,7 +87,8 @@ export default function Pinging({
               image: dataURItoBlob(image['data_url']),
             })
             console.log('Name and description stored', name, description)
-            const uri = metadataFile.url.replace('ipfs://', '')
+            let uri = metadataFile.url.replace('ipfs://', '')
+            uri.replace('/metadata.json', '')
 
             const newNft: NFT = {
               uri,
@@ -121,7 +122,7 @@ export default function Pinging({
         <>
           {nfts.length > 1 && <p>Picking up from index {nfts.length}</p>}
           <button className="btn-primary" onClick={pinIpfs}>
-            Ping Nfts!
+            Pin Nfts!
           </button>
           <p>
             NFT data is uploaded onto IPFS, a decentralized file storing system.

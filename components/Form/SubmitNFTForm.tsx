@@ -1,6 +1,7 @@
 import { getMany } from 'idb-keyval'
 import React, { useEffect, useState } from 'react'
 import { ImageListType } from 'react-images-uploading'
+import { Contract } from '../../types/Contract'
 import NFT from '../../types/NFT'
 import Mint from '../Mint/Mint'
 import Pinging from '../Pinging/Pinging'
@@ -21,48 +22,65 @@ export default function SubmitNFTForm() {
   }>({ name: '', description: '', count: 1 })
   const [nfts, setNfts] = useState<NFT[]>([])
   const [images, setImages] = useState<ImageListType>([])
+  const [storedContracts, setStoredContracts] = useState<Contract[]>([])
 
-  // useEffect(() => {
-  //   const getCachedVals = () => {
-  //     getMany(['contractAddress', 'metadata', 'nfts', 'images']).then(
-  //       ([storedAddress, storedMetadata, storedNfts, storedImages]) => {
-  //         if (storedAddress != null) {
-  //           setContractAddress(storedAddress)
-  //         }
-  //         if (storedMetadata != null) {
-  //           console.log(storedMetadata)
-  //           setMetadata(storedMetadata)
-  //         }
+  useEffect(() => {
+    const getCachedVals = () => {
+      getMany([
+        'contractAddress',
+        'metadata',
+        'nfts',
+        'images',
+        'storedContracts',
+      ]).then(
+        ([
+          storedAddress,
+          storedMetadata,
+          storedNfts,
+          storedImages,
+          storedContracts,
+        ]) => {
+          if (storedAddress != null) {
+            setContractAddress(storedAddress)
+          }
+          if (storedMetadata != null) {
+            console.log(storedMetadata)
+            setMetadata(storedMetadata)
+          }
 
-  //         if (storedNfts != null) {
-  //           setNfts(storedNfts)
-  //         }
-  //         if (storedImages != null) {
-  //           console.log(storedImages)
-  //           setImages(storedImages)
-  //         }
+          if (storedNfts != null) {
+            setNfts(storedNfts)
+          }
+          if (storedImages != null) {
+            console.log(storedImages)
+            setImages(storedImages)
+          }
 
-  //         if (storedAddress != null) {
-  //           setState('configure')
-  //         }
-  //         if (storedNfts != null && storedMetadata != null) {
-  //           if (
-  //             storedNfts.length >= storedMetadata.count &&
-  //             storedNfts.length > 0
-  //           ) {
-  //             setState('assign')
-  //           } else if (
-  //             storedNfts.length < storedMetadata.count &&
-  //             storedNfts.length > 0
-  //           ) {
-  //             setState('ping')
-  //           }
-  //         }
-  //       }
-  //     )
-  //   }
-  //   getCachedVals()
-  // }, [])
+          if (storedContracts != null) {
+            setStoredContracts(storedContracts)
+          }
+
+          if (storedAddress != null) {
+            setState('configure')
+          }
+          if (storedNfts != null && storedMetadata != null) {
+            if (
+              storedNfts.length >= storedMetadata.count &&
+              storedNfts.length > 0
+            ) {
+              setState('assign')
+            } else if (
+              storedNfts.length < storedMetadata.count &&
+              storedNfts.length > 0
+            ) {
+              setState('ping')
+            }
+          }
+        }
+      )
+    }
+    getCachedVals()
+  }, [])
 
   const renderForm = () => {
     switch (state) {
@@ -71,6 +89,7 @@ export default function SubmitNFTForm() {
           <DeployContract
             setContractAddress={setContractAddress}
             setState={setState}
+            storedContracts={storedContracts}
             contractAddress={contractAddress}
           />
         )
@@ -106,7 +125,7 @@ export default function SubmitNFTForm() {
         )
       case 'mint':
         return contractAddress ? (
-          <Mint nfts={nfts} address={contractAddress} />
+          <Mint nfts={nfts} address={contractAddress} setAddress={setContractAddress} />
         ) : (
           <p>Contract not found</p>
         )
