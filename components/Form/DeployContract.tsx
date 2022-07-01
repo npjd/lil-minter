@@ -105,7 +105,6 @@ export default function DeployContract({
   ) => {
     e.preventDefault()
     if (walletStatus == 'active') {
-      alert.info('Checking if you have premissions...')
       const { ethereum } = window as any
       const provider = new ethers.providers.Web3Provider(ethereum)
       const signer = provider.getSigner()
