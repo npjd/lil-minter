@@ -8,7 +8,7 @@ export default function Hero() {
       </h1>
 
       <p className="mt-3 text-2xl">
-        A simple, intuitive, and optimized way to deploy NFTs
+        A simple, intuitive, and optimized way to mint NFTs
       </p>
     </div>
   )

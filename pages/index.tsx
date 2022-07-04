@@ -10,7 +10,7 @@ const Home: NextPage = () => {
   return (
     <div className="flex flex-col py-2 h-full">
       <Head>
-        <title>Create Next App</title>
+        <title>Lil Minter</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -28,6 +28,8 @@ const Home: NextPage = () => {
           <SubmitNFTForm />
         </div>
       </main>
+
+      <Footer />
 
 
     </div>

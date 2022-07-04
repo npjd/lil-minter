@@ -35,6 +35,7 @@ export default function ResetNFT({
           ['metadata', { name: '', description: '', count: 1 }],
           ['nfts', []],
           ['images', []],
+          ['mintingIndex', 0],
         ])
       }}
     >
