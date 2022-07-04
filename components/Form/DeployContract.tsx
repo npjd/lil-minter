@@ -91,7 +91,7 @@ export default function DeployContract({
         }
       })
       console.log('deployed at ', deployContract.address)
-      alert.success('Contract deployed to address ' + deployContract.address)
+      alert.success("Contract deployed!")
       setState('configure')
     } catch (e) {
       console.log(e)
@@ -187,13 +187,14 @@ export default function DeployContract({
             storedContracts.length > 0 && (
               <>
               <label>Select previously deployed contract </label>
-              <select value={address} onChange={(e)=>{
+              <select defaultValue={""} onChange={(e)=>{
                 setAddress(e.target.value)
                 setContractAddress(e.target.value)
                 console.log(e.target.value)
               }}
               className="p-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
               >
+                <option hidden={true}>Select a Contract </option>
                 {storedContracts.map((contract) => (
                   <option key={contract.address} value={contract.address}>{contract.name} | {contract.tokenSymbol} | {contract.address} </option>
                 ))}

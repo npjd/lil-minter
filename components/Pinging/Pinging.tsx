@@ -133,6 +133,7 @@ export default function Pinging({
       {(state == 'pinging' || state == 'complete') && (
         <div style={{ width: 200, height: 200 }}>
           <CircularProgressbar value={progress} text={`${progress}%`} />
+          <p>Please wait, pinning in progress. This might take a while.</p>
         </div>
       )}
 

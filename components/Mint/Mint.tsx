@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import NFT from '../../types/NFT'
 import { abi } from '../../artifacts/contracts/MinterNFT.sol/MinterNFT.json'
 import { useAlert } from 'react-alert'
@@ -27,15 +27,15 @@ export default function Mint({
   const [status, setStatus] = useState<'success' | 'error' | ''>('')
   const walletStatus = useStatus()
   const chainId = useChainId()
+  const [lastTransactionHash, setLastTransactionHash] = useState<string>('')
 
   const getScanUrl = () => {
     if (chainId == '71') {
-      return 'https://evmtestnet.confluxscan.io/token/' + address
+      return 'https://evmtestnet.confluxscan.io/tx/' + lastTransactionHash
     } else if (chainId == '1030') {
-      return 'https://evm.confluxscan.io/token/' + address
+      return 'https://evm.confluxscan.io/tx/' + lastTransactionHash
     }
   }
-
 
   const mintNFTs = async () => {
     if (!(chainId == '1030' || chainId == '71')) {
@@ -69,11 +69,15 @@ export default function Mint({
         console.log(val)
         alert.success(`Minted batch ${ii + 1} of ${uris.length}`)
         await set('mintingIndex', ii + 1)
+        if (ii == uris.length - 1) {
+          setLastTransactionHash(val.hash)
+        }
       }
 
       setMinting(false)
       alert.success('Minted!')
       setStatus('success')
+      await set('mintingIndex', 0)
     } catch (e) {
       console.log(e)
       setMinting(false)
@@ -128,12 +132,16 @@ export default function Mint({
                   </button>
                 </div>
               ) : (
-                <button onClick={() => mintNFTs()} className="btn-primary">
-                  Mint
-                </button>
+                <>
+                  <button onClick={() => mintNFTs()} className="btn-primary">
+                    Mint
+                  </button>
+                </>
               )
             ) : (
-              <button onClick={connect}>Connect your wallet to mint!</button>
+              <button className="btn-primary" onClick={connect}>
+                Connect your wallet to mint!
+              </button>
             )}
           </div>
         )
