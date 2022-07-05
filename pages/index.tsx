@@ -15,11 +15,24 @@ const Home: NextPage = () => {
       </Head>
 
       <nav>
-        <div className="flex flex-row-reverse w-full h-16 -ml-10 mt-8">
-          <ConnectWallet />
+        <div className="flex flex-row w-full h-16 mt-8 mx-5 ">
+          <p className="font-bold">
+            Encountering bugs/issues? Submit them{' '}
+            <a
+              className="underline text-blue-500 hover:text-blue-800 visited:text-purple-600 hover:cursor-pointer"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://github.com/nimapourjafar/lil-minter"
+            >
+              {' '}
+              here
+            </a>
+          </p>
+          <div className="absolute right-10">
+            <ConnectWallet />
+          </div>
         </div>
       </nav>
-
 
       <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center mb-10">
         <Hero />
@@ -28,9 +41,6 @@ const Home: NextPage = () => {
           <SubmitNFTForm />
         </div>
       </main>
-
-      <Footer />
-
 
     </div>
   )

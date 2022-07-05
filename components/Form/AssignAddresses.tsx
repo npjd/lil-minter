@@ -71,7 +71,7 @@ export default function AssignAddresses({
   return (
     // create a grid
     <div className="flex flex-col">
-      <h2 className="text-xl my-2">Assign Addresses</h2>
+      <h2 className="text-xl my-2">Assign the wallet addresses you want your NFTs to be sent to</h2>
       <div className="flex flex-col items-start space-y-2">
         <label>Upload a file of addresses</label>
         <input
