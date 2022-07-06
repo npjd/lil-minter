@@ -87,11 +87,13 @@ export default function Pinging({
               image: dataURItoBlob(image['data_url']),
             })
             console.log('Name and description stored', name, description)
-            let uri = metadataFile.url.replace('ipfs://', '')
-            uri.replace('/metadata.json', '')
-
+            let newUri = metadataFile.url
+            console.log('New URI: ' + newUri)
+            newUri = newUri.replace("ipfs://","")
+            newUri = newUri.replace('/metadata.json', '')
+            console.log('New URI: ' + newUri)
             const newNft: NFT = {
-              uri,
+              uri:newUri,
               name: name,
               description: description,
               address: '',
@@ -113,7 +115,7 @@ export default function Pinging({
 
     setState('complete')
     console.log('Finished pinning')
-    console.log('Final NFTs: ' + finalNfts)
+    
   }
 
   return (
