@@ -153,7 +153,7 @@ export default function DeployContract({
               onClick={deployContract}
               disabled={deploying}
             >
-              Deploy
+              Deploy 
             </button>
             <button
               className="btn-primary bg-red-500 hover:bg-red-600"

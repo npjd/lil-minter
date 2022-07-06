@@ -17,7 +17,7 @@ const Home: NextPage = () => {
       <nav>
         <div className="flex flex-row w-full h-16 mt-8 mx-5 ">
           <p className="font-bold">
-            Encountering bugs/issues? Submit them{' '}
+           Encountering bugs/issues? Submit them{' '}
             <a
               className="underline text-blue-500 hover:text-blue-800 visited:text-purple-600 hover:cursor-pointer"
               target="_blank"
@@ -25,8 +25,10 @@ const Home: NextPage = () => {
               href="https://github.com/nimapourjafar/lil-minter"
             >
               {' '}
-              here
+              here 
             </a>
+            {' '}
+            🐛
           </p>
           <div className="absolute right-10">
             <ConnectWallet />

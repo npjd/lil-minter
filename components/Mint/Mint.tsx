@@ -132,11 +132,11 @@ export default function Mint({
                   </button>
                 </div>
               ) : (
-                <>
-                  <button onClick={() => mintNFTs()} className="btn-primary">
-                    Mint
+                <div>
+                  <button onClick={() => mintNFTs()} className="btn-primary bg-green-500 hover:bg-green-600">
+                    Mint 🏆
                   </button>
-                </>
+                </div>
               )
             ) : (
               <button className="btn-primary" onClick={connect}>

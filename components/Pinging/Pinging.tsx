@@ -89,11 +89,11 @@ export default function Pinging({
             console.log('Name and description stored', name, description)
             let newUri = metadataFile.url
             console.log('New URI: ' + newUri)
-            newUri = newUri.replace("ipfs://","")
+            newUri = newUri.replace('ipfs://', '')
             newUri = newUri.replace('/metadata.json', '')
             console.log('New URI: ' + newUri)
             const newNft: NFT = {
-              uri:newUri,
+              uri: newUri,
               name: name,
               description: description,
               address: '',
@@ -115,36 +115,40 @@ export default function Pinging({
 
     setState('complete')
     console.log('Finished pinning')
-    
   }
 
   return (
     <div className="flex flex-col items-center">
       {state == 'start' && (
-        <>
+        <div className='flx flex-col space-y-2'>
           {nfts.length > 1 && <p>Picking up from index {nfts.length}</p>}
+
+          <p>
+            NFT data is uploaded onto IPFS, a decentralized file storing system. 💽
+          </p>
+          <p>It is used to keep your images and metadata safe! 🔐</p>
           <button className="btn-primary" onClick={pinIpfs}>
             Pin Nfts!
           </button>
-          <p>
-            NFT data is uploaded onto IPFS, a decentralized file storing system.
-            It is used to keep your images and metadata safe!
-          </p>
-        </>
+        </div>
       )}
       {(state == 'pinging' || state == 'complete') && (
         <div style={{ width: 200, height: 200 }}>
           <CircularProgressbar value={progress} text={`${progress}%`} />
           {progress < 100 && (
-            <p>Please wait, pinning in progress. This might take a while.</p>
+            <>
+            
+            <p>Please wait, pinning in progress.</p>
+            <p>This might take a while... ⏳</p>
+            </>
           )}
         </div>
       )}
 
       {state == 'complete' && (
         <div>
-          <p>
-            <b>Pinning complete!</b>
+          <p className="my-2">
+            <b>Pinning complete! ⌛️</b>
           </p>
           <button
             className="btn-primary"
